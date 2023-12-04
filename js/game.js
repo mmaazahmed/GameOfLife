@@ -84,3 +84,7 @@ export function populateBoard(game){
     // randomise cells
 
 }
+
+export function clearBoard(game){
+    //clear board. future feature
+}
