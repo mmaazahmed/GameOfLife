@@ -1,5 +1,5 @@
 const canvas=document.getElementById('mycanvas');
-canvas.style.background='black';
+canvas.style.background='green';
 const ctx=canvas.getContext("2d");
 canvas.height=window.innerHeight;
 canvas.width=window.innerWidth;
@@ -231,7 +231,7 @@ function board(width,height,point,subd){
     this.run=()=>{
         if(!this.pause){
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            this.draw_grid();
+            // this.draw_grid();
             for(const active_cell of this.active_cells){
                 let [x,y]=active_cell.split(',').map(Number);
                 this.draw_cell(x,y);
@@ -247,14 +247,10 @@ function board(width,height,point,subd){
 
 let cells=[];
 cells=["0,1", "1,2", "2,0","2,1","2,2","7,7","7,8","6,10","7,5"];
-// const cells=[  "5,6", "6,7", "7,5", "7,6", "7,7"];
-// const cells = ["5,6", "6,7", "7,5", "7,6", "7,7"];
-// cells=["0,1","7,7","7,8","6,10","7,5"];
 
 let point=[500,500];
 point=[canvas.width/2,canvas.height/2];
 let game=new board(canvas.width,canvas.width,point,50);
-// game.draw_grid();
 game.add_active_cells(cells);  
 
 
@@ -282,10 +278,14 @@ function resizeCanvas(){
 document.addEventListener('keydown', handleKeyPress);
 document.addEventListener('keydown', speedup);
 document.addEventListener('keydown', speedDown);
+document.addEventListener('keydown', scrollUp);
+document.addEventListener('keydown', scrollDown);
+document.addEventListener('keydown', scrollLeft);
+document.addEventListener('keydown', scrollRight);
 
 function speedup(event) {
     // Check if the pressed key is the spacebar (keyCode 32)
-    if (event.keyCode === 38) {
+    if (event.keyCode === 109) {
       // Log or use the spacebar press
       speed+=10;
       console.log(speed);
@@ -294,14 +294,65 @@ function speedup(event) {
   }
   function speedDown(event) {
     // Check if the pressed key is the spacebar (keyCode 32)
-    if (event.keyCode === 40) {
+    if (event.keyCode === 107) {
       // Log or use the spacebar press
       speed-=10;
       console.log(speed);
     }
   }
+const scrollIncrement=5;
+function scrollLeft(event){
+    if(event.keyCode!=37){ return; }
+    const updatedCells = new Set();
+
+    for(const coordinate of game.active_cells){
+        const [x,y]=coordinate.split(',');
+        const newX=parseInt(x)+scrollIncrement;
+        updatedCells.add(`${newX},${y}`);
+        console.log(`${newX},${y}`);
+    }
+    // const [x,y]=game.point;
+    // game.point=[x+1,y];
+    game.active_cells=updatedCells;
+
+}
+function scrollRight(event){
+    if(event.keyCode!=39){ return; }
+    const updatedCells = new Set();
+
+    for(const coordinate of game.active_cells){
+        const [x,y]=coordinate.split(',');
+        const newX=parseInt(x)-scrollIncrement;
+        updatedCells.add(`${newX},${y}`);
+    }
+    game.active_cells=updatedCells;
 
 
+}
+function scrollUp(event){
+    if(event.keyCode!==38){ return; }
+    const updatedCells = new Set();
+
+    for(const coordinate of game.active_cells){
+        const [x,y]=coordinate.split(',');
+        const newY=parseInt(y)+scrollIncrement;
+        updatedCells.add(`${x},${newY}`);
+    }
+game.active_cells=updatedCells;
+}
+
+function scrollDown(event){
+    if(event.keyCode!=40){ return; }
+    const updatedCells = new Set();
+
+    for(const coordinate of game.active_cells){
+        const [x,y]=coordinate.split(',');
+        const newY=parseInt(y)-scrollIncrement;
+        updatedCells.add(`${x},${newY}`);
+    }
+    game.active_cells=updatedCells;
+
+}
 function handleKeyPress(event) {
     // Check if the pressed key is the spacebar (keyCode 32)
     if (event.keyCode === 32) {
