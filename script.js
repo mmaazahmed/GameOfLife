@@ -1,5 +1,5 @@
 const canvas=document.getElementById('mycanvas');
-canvas.style.background='green';
+canvas.style.background='blue';
 const ctx=canvas.getContext("2d");
 canvas.height=window.innerHeight;
 canvas.width=window.innerWidth;
