@@ -1,10 +1,8 @@
 function removeCells(game,cellsToRemove){
-
     for(const cell of cellsToRemove){
         game.activeCells.delete(cell);
     }
 }
-
 
 function addCells(game,cellsToAdd){
     for(const cell of cellsToAdd){
@@ -13,25 +11,24 @@ function addCells(game,cellsToAdd){
 }
 function getNeighboursCount(game){
     const neighboursCount={};
-    for(const activeCell of game.activeCells){
+    for(const activeCell of game.activeCells)
+    {
         const [x,y]=activeCell.split(',').map(Number);
         const neighbours=getNeighbours(x,y);
-
         for(const neighbour of neighbours){
             neighboursCount[neighbour]= ( neighboursCount[neighbour] || 0)+1;
         }
     }
-     // If a cell has no live neighbors, initialize its count to 0
-    for (const activeCell of game.activeCells) {
-        if (!neighboursCount[activeCell]) {
 
+     // If a cell has no live neighbors, initialize its count to 0
+    for (const activeCell of game.activeCells) 
+    {
+        if (!neighboursCount[activeCell]) {
             neighboursCount[activeCell] = 0;
         }
     }
     return neighboursCount;
-
 }
-
 
 function getNeighbours(x,y){
     const neighbours=[];//consider imeplementing it as a set
@@ -52,7 +49,6 @@ export function initializeGame(width,height,cellSize){
         cellSize:cellSize,
         activeCells:new Set()
     }
-
 }
 
 export function updateGame(game){
