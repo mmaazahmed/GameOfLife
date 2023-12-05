@@ -46,7 +46,7 @@ export function initializeGame(canvas,width, height, cellSize, timeToNextGen) {
     height: height,
     cellSize: cellSize,
     activeCells: new Set(),
-    isPaused: true,
+    isPaused: false,
     lastUpdateTime: performance.now(),
     updateInterval: timeToNextGen,
   };
