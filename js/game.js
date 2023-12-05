@@ -5,6 +5,7 @@ function removeCells(game,cellsToRemove){
     }
 }
 
+
 function addCells(game,cellsToAdd){
     for(const cell of cellsToAdd){
         game.activeCells.add(cell);
@@ -33,7 +34,7 @@ function getNeighboursCount(game){
 
 
 function getNeighbours(x,y){
-    const neighbours={};//consider imeplementing it as a set
+    const neighbours=[];//consider imeplementing it as a set
     for (let i = x - 1; i <= x + 1; i++) {
         for (let j = y - 1; j <= y + 1; j++) {
             if (i !== x || j !== y) {
@@ -44,7 +45,7 @@ function getNeighbours(x,y){
     return neighbours;
 }
 
-export function initialiseGame(width,height,cellSize){
+export function initializeGame(width,height,cellSize){
     return {
         width:width,
         height:height,
@@ -57,7 +58,7 @@ export function initialiseGame(width,height,cellSize){
 export function updateGame(game){
     const cellsToRemove=new Set();
     const cellsToAdd=new Set();
-    const neighboursCount=getNeighboursCount();
+    const neighboursCount=getNeighboursCount(game);
 
     for(const [cell,count] of Object.entries(neighboursCount)){
         if ((count === 2 || count === 3) && game.activeCells.has(cell)) {
@@ -77,7 +78,11 @@ export function updateGame(game){
     
     removeCells(game,cellsToRemove);
     addCells(game,cellsToAdd);
-
+}
+export function addActiveCells(game,cells){
+    for (const cell of cells){
+        game.activeCells.add(cell);
+    }
 }
 
 export function populateBoard(game){

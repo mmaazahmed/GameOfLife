@@ -52,7 +52,7 @@ function drawCell(game,ctx,x,y){
     // let h_offset=this.cell[0];
     const cs=game.cellSize;
     ctx.fillStyle=CELL_COLOR;
-    ctx.fillRect((cs*x), (cs*y), ca,cs);   
+    ctx.fillRect((cs*x), (cs*y), cs,cs);   
 
 }
 function drawActiveCells(ctx,game){
