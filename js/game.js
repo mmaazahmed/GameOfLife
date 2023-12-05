@@ -47,7 +47,8 @@ export function initializeGame(width,height,cellSize){
         width:width,
         height:height,
         cellSize:cellSize,
-        activeCells:new Set()
+        activeCells:new Set(),
+        isPaused:false
     }
 }
 

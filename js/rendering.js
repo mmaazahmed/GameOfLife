@@ -1,6 +1,8 @@
 const CELL_COLOR='#fec3a6';
 const CELL_BOUNDRY_COLOR='blue';
-const GRID_COLOR='#EFE9AE';
+// const GRID_COLOR='#EFE9AE';
+const GRID_COLOR='yellow';
+
 function drawBoundary(ctx,game){
     ctx.rect(0, 0, game.width, game.height);
     ctx.strokeStyle='#FF928B';
