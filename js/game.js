@@ -41,18 +41,22 @@ function getNeighbours(x,y){
     }
     return neighbours;
 }
-
-export function initializeGame(width,height,cellSize){
+export function initializeGame(width,height,cellSize,timeToNextGen){
     return {
         width:width,
         height:height,
         cellSize:cellSize,
         activeCells:new Set(),
-        isPaused:false
+        isPaused:false,
+        timeToNextGen:timeToNextGen,
+        defaultSpeed: timeToNextGen
+
     }
 }
 
 export function updateGame(game){
+    if(game.timeToNextGen>0){game.timeToNextGen-=1; return;}
+    game.timeToNextGen=game.defaultSpeed;
     const cellsToRemove=new Set();
     const cellsToAdd=new Set();
     const neighboursCount=getNeighboursCount(game);

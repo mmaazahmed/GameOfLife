@@ -1,7 +1,8 @@
 const CELL_COLOR='#fec3a6';
 const CELL_BOUNDRY_COLOR='blue';
 // const GRID_COLOR='#EFE9AE';
-const GRID_COLOR='red';
+const GRID_COLOR='white';
+const DOT_COLOR='blue';
 
 function drawBoundary(ctx,game){
     ctx.rect(0, 0, game.width, game.height);
@@ -31,12 +32,25 @@ function drawHorizontalLines(ctx,game){
     }
 
 }
+function drawGridAsDots(ctx,game) {
+    const r = 2;
+    const cellSize=game.cellSize;
+
+    for (var x = 0; x < game.width; x+=cellSize) {
+      for (var y =0; y < game.height; y+=cellSize) {
+          ctx.fillStyle =DOT_COLOR;   
+          ctx.fillRect(x-r/2,y-r/2,r,r);
+        }
+    }
+  }
 function drawGrid(ctx,game){
     ctx.beginPath();
     drawBoundary(ctx,game);
     drawVerticalLines(ctx,game);
     drawHorizontalLines(ctx,game);
     ctx.strokeStyle=GRID_COLOR;
+    ctx.lineWidth = game.cellSize/20;
+
     ctx.stroke();
     ctx.closePath();
 
@@ -59,11 +73,12 @@ function drawCellAsSqaure(game,ctx,x,y){
    
     ctx.fillStyle=CELL_COLOR;
     ctx.strokeStyle=CELL_BOUNDRY_COLOR;
+    ctx.lineWidth = cellSize/20;
 
     ctx.beginPath();
     ctx.rect((cellSize*x), (cellSize*y), cellSize,cellSize);  
     ctx.fill();
-    ctx.stroke();
+    // ctx.stroke();
     ctx.closePath();
     
 
@@ -81,6 +96,7 @@ function drawActiveCells(ctx,game){
 export function renderGame(ctx,game){
     clearCanvas(ctx,game);
     drawGrid(ctx,game);
+    // drawGridAsDots(ctx,game);
     drawActiveCells(ctx,game);
 
 }

@@ -61,15 +61,18 @@ function getMousePosOnBoard(canvas,game,event){
     return `${gridX},${gridY}`
 }
 
-function speedUp(speed,event){
+function speedUp(game,event){
     if (event.keyCode!==104){return;}
-    speed.value-=5;
-    speed.value=Math.max(0,speed.value);
+    game.defaultSpeed--;
+    game.defaultSpeed=Math.max(0,game.defaultSpeed);
+    console.log(game.defaultSpeed);
 
 }
-function speedDown(speed,event){
+function speedDown(game,event){
     if (event.keyCode!==105){return;}
-    speed.value+=5;
+
+    game.defaultSpeed++;
+    game.defaultSpeed=Math.min(50,game.defaultSpeed);
 
 }
 
@@ -81,8 +84,8 @@ function handleKeyPress(game,event,speed){
     isPaused(game,event);
     zoomIn(game,event);
     zoomOut(game,event);
-    speedUp(speed,event);
-    speedDown(speed,event);
+    speedUp(game,event);
+    speedDown(game,event);
 }
 function HandleMouseClick(canvas,game,event){
     const clickedCell= getMousePosOnBoard(canvas,game,event);
@@ -93,8 +96,17 @@ function HandleMouseClick(canvas,game,event){
     }
     
 }
-export function initializeInputListeners(canvas,game,speed){
-document.addEventListener('keydown', (event)=>handleKeyPress(game,event,speed));
+function changeBackgroundColor(canvas,event){
+    // to do
+}
+
+function changeCellColor(canvas,event){
+    //todo
+}
+
+export function initializeInputListeners(canvas,game){
+
+document.addEventListener('keydown', (event)=>handleKeyPress(game,event));
 document.addEventListener('click', (event)=> HandleMouseClick(canvas,game,event));
 
 
