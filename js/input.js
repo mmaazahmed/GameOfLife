@@ -1,19 +1,17 @@
 const SCROLL_INCREMENT=1;
+
 const scroll={
     scrollUp: function(game,event){
         if (event.keyCode !== 38) { return; }
         scrollCells(game,0,SCROLL_INCREMENT);
-
     },
     scrollDown: function(game,event){
         if (event.keyCode !== 40) { return; }
         scrollCells(game,0,-SCROLL_INCREMENT);
-
     },
     scrollLeft: function(game,event){
         if (event.keyCode !== 37) { return; }
         scrollCells(game,SCROLL_INCREMENT,0);
-
     },
     scrollRight: function(game,event){
         if (event.keyCode !== 39) { return; }
@@ -32,6 +30,7 @@ function scrollCells(game,dx,dy){
     }
     game.activeCells=updatedCells;
 }
+
 function isPaused(game,event){
     if (event.keyCode !== 32) { return; }
 
@@ -40,44 +39,32 @@ function isPaused(game,event){
 }
 function zoomIn(game,event){
     if (event.keyCode !== 107) { return; }
-
     game.cellSize+=1;
-    console.log("im here");
 }
 function zoomOut(game,event){
     if (event.keyCode !== 109) { return; }
-    let oldCellSize=game.cellSize;
     game.cellSize-=1;
-    game.cellSize=Math.max(3,game.cellSize);
-    console.log(game.cellSize);
-
-    // const tempCellSize=game.cellSize-5;
-    // game.cellSize=min(1,tempCellSize);
+    game.cellSize=Math.max(3,game.cellSize)
 }
-function addCellonClick(canvas,game,event){
+function getMousePosOnBoard(canvas,game,event){
     const cellSize=game.cellSize;
-    var mouseX = event.clientX;
-    var mouseY = event.clientY;
-    console.log(mouseX,mouseY);
-    
     const canvasRect=canvas.getBoundingClientRect();
-    const canvasX=canvasRect.left;
-    const canvasY=canvasRect.top;
 
-    const relativeX = mouseX - canvasX;
-    const relativeY = mouseY - canvasY;
+    const {clientX,clientY}=event;
+    const {left: canvasX,top: canvasY}=canvasRect;
+
+    const relativeX = clientX - canvasX;
+    const relativeY = clientY - canvasY;
 
     const gridX = Math.floor(relativeX / cellSize);
     const gridY = Math.floor(relativeY / cellSize);
-    
-    game.activeCells.add(`${gridX},${gridY}`);
-
+    return `${gridX},${gridY}`
 }
+
 function speedUp(speed,event){
     if (event.keyCode!==104){return;}
     speed.value-=5;
     speed.value=Math.max(0,speed.value);
-    console.log(speed);
 
 }
 function speedDown(speed,event){
@@ -85,6 +72,7 @@ function speedDown(speed,event){
     speed.value+=5;
 
 }
+
 function handleKeyPress(game,event,speed){
     scroll.scrollUp(game,event);
     scroll.scrollDown(game,event);
@@ -96,11 +84,18 @@ function handleKeyPress(game,event,speed){
     speedUp(speed,event);
     speedDown(speed,event);
 }
-
+function HandleMouseClick(canvas,game,event){
+    const clickedCell= getMousePosOnBoard(canvas,game,event);
+    if (!game.activeCells.has(clickedCell)){
+        game.activeCells.add(clickedCell);
+    }else{
+        game.activeCells.delete(clickedCell);
+    }
+    
+}
 export function initializeInputListeners(canvas,game,speed){
-// ctx.addEventListener('mousedown',handleMousePress);
 document.addEventListener('keydown', (event)=>handleKeyPress(game,event,speed));
-document.addEventListener('click', (event)=>addCellonClick(canvas,game,event));
+document.addEventListener('click', (event)=> HandleMouseClick(canvas,game,event));
 
 
 }
