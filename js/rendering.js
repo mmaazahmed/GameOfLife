@@ -1,8 +1,9 @@
-const CELL_COLOR='#EBECF0';
-
+const CELL_COLOR='#fec3a6';
+const CELL_BOUNDRY_COLOR='blue';
+const GRID_COLOR='#EFE9AE';
 function drawBoundary(ctx,game){
     ctx.rect(0, 0, game.width, game.height);
-    ctx.strokeStyle='pink';
+    ctx.strokeStyle='#FF928B';
 }
 
 function drawVerticalLines(ctx,game){
@@ -14,7 +15,7 @@ function drawVerticalLines(ctx,game){
 
         ctx.moveTo(x,y1);
         ctx.lineTo(x,y2);
-        ctx.strokeStyle='black';
+        // ctx.strokeStyle='black';
     }
 
 }
@@ -24,7 +25,7 @@ function drawHorizontalLines(ctx,game){
         const y=offset*Math.floor(i);
         ctx.moveTo(0,y);
         ctx.lineTo(game.width,y);
-        ctx.strokeStyle='black';
+        // ctx.strokeStyle='black';
     }
 
 }
@@ -33,8 +34,9 @@ function drawGrid(ctx,game){
     drawBoundary(ctx,game);
     drawVerticalLines(ctx,game);
     drawHorizontalLines(ctx,game);
-    ctx.strokeStyle='red';
+    ctx.strokeStyle=GRID_COLOR;
     ctx.stroke();
+    ctx.closePath();
 
 }
 
@@ -42,23 +44,33 @@ function drawGrid(ctx,game){
 function drawCellAsCircle(game,ctx,x,y){ //circle
     let v_offset=game.cellSize;
     let h_offset=game.cellSize;
-    ctx.fillStyle='white';
+    ctx.fillStyle=CELL_COLOR;
     ctx.beginPath();
+    ctx.strokeStyle=CELL_BOUNDRY_COLOR;
     ctx.arc((h_offset*x)+h_offset/2, (v_offset*y)+h_offset/2,h_offset/2,0,Math.PI *2);
     ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
 }
-function drawCell(game,ctx,x,y){
-    // let v_offset=this.cell[1];
-    // let h_offset=this.cell[0];
-    const cs=game.cellSize;
+function drawCellAsSqaure(game,ctx,x,y){
+    const cellSize=game.cellSize;
+   
     ctx.fillStyle=CELL_COLOR;
-    ctx.fillRect((cs*x), (cs*y), cs,cs);   
+    ctx.strokeStyle=CELL_BOUNDRY_COLOR;
+
+    ctx.beginPath();
+    ctx.rect((cellSize*x), (cellSize*y), cellSize,cellSize);  
+    // ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+    
 
 }
 function drawActiveCells(ctx,game){
     for(const activeCell of game.activeCells){
         let [x,y]=activeCell.split(',').map(Number);
-        drawCell(game,ctx,x,y);
+        drawCellAsSqaure(game,ctx,x,y);
+        // drawCellAsCircle(game,ctx,x,y);
     }
 
 
