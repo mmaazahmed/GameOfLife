@@ -8,20 +8,19 @@ const ctx = canvas.getContext('2d');
 canvas.height=window.innerHeight;
 canvas.width=window.innerWidth;
 canvas.style.background='#ffac81';
+canvas.style.background='black';
 
-
-const isPaused={value:false}
+const speed={value:100};
 const game = initializeGame(canvas.width, canvas.height, cell_size);
-initializeInputListeners(ctx,game);
+initializeInputListeners(canvas,game,speed);
 
 let cells=[];
 cells=["0,1", "1,2", "2,0","2,1","2,2","7,7","7,8","6,10","7,5"];
 addActiveCells(game,cells);
-const speed=100;
 function animate() {
     setTimeout(function () {
       requestAnimationFrame(animate); 
-    }, speed);
+    }, speed.value);
   gameLoop(ctx,game);
 }
 

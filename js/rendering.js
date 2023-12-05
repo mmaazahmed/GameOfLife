@@ -1,11 +1,11 @@
 const CELL_COLOR='#fec3a6';
 const CELL_BOUNDRY_COLOR='blue';
 // const GRID_COLOR='#EFE9AE';
-const GRID_COLOR='yellow';
+const GRID_COLOR='red';
 
 function drawBoundary(ctx,game){
     ctx.rect(0, 0, game.width, game.height);
-    ctx.strokeStyle='#FF928B';
+    ctx.strokeStyle=GRID_COLOR;
 }
 
 function drawVerticalLines(ctx,game){
@@ -62,7 +62,7 @@ function drawCellAsSqaure(game,ctx,x,y){
 
     ctx.beginPath();
     ctx.rect((cellSize*x), (cellSize*y), cellSize,cellSize);  
-    // ctx.fill();
+    ctx.fill();
     ctx.stroke();
     ctx.closePath();
     

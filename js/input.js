@@ -54,7 +54,38 @@ function zoomOut(game,event){
     // const tempCellSize=game.cellSize-5;
     // game.cellSize=min(1,tempCellSize);
 }
-function handleKeyPress(game,event){
+function addCellonClick(canvas,game,event){
+    const cellSize=game.cellSize;
+    var mouseX = event.clientX;
+    var mouseY = event.clientY;
+    console.log(mouseX,mouseY);
+    
+    const canvasRect=canvas.getBoundingClientRect();
+    const canvasX=canvasRect.left;
+    const canvasY=canvasRect.top;
+
+    const relativeX = mouseX - canvasX;
+    const relativeY = mouseY - canvasY;
+
+    const gridX = Math.floor(relativeX / cellSize);
+    const gridY = Math.floor(relativeY / cellSize);
+    
+    game.activeCells.add(`${gridX},${gridY}`);
+
+}
+function speedUp(speed,event){
+    if (event.keyCode!==104){return;}
+    speed.value-=5;
+    speed.value=Math.max(0,speed.value);
+    console.log(speed);
+
+}
+function speedDown(speed,event){
+    if (event.keyCode!==105){return;}
+    speed.value+=5;
+
+}
+function handleKeyPress(game,event,speed){
     scroll.scrollUp(game,event);
     scroll.scrollDown(game,event);
     scroll.scrollLeft(game,event);
@@ -62,11 +93,14 @@ function handleKeyPress(game,event){
     isPaused(game,event);
     zoomIn(game,event);
     zoomOut(game,event);
+    speedUp(speed,event);
+    speedDown(speed,event);
 }
 
-export function initializeInputListeners(ctx,game){
+export function initializeInputListeners(canvas,game,speed){
 // ctx.addEventListener('mousedown',handleMousePress);
-document.addEventListener('keydown', (event)=>handleKeyPress(game,event));
+document.addEventListener('keydown', (event)=>handleKeyPress(game,event,speed));
+document.addEventListener('click', (event)=>addCellonClick(canvas,game,event));
 
 
 }
