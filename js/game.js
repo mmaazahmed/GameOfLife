@@ -30,14 +30,10 @@ function getNeighboursCount(game){
     return neighboursCount;
 
 }
-function addCells(game,cellsToAdd){
-    for(const cell of cellsToAdd){
-        game.activeCells.add(cell);
-    }
-}
+
 
 function getNeighbours(x,y){
-    const neighbours=[];
+    const neighbours={};//consider imeplementing it as a set
     for (let i = x - 1; i <= x + 1; i++) {
         for (let j = y - 1; j <= y + 1; j++) {
             if (i !== x || j !== y) {
@@ -53,37 +49,38 @@ export function initialiseGame(width,height,cellSize){
         width:width,
         height:height,
         cellSize:cellSize,
-        activeCells:new set()
+        activeCells:new Set()
     }
 
 }
 
 export function updateGame(game){
     const cellsToRemove=new Set();
-        const cellsToAdd=new Set();
-        const neighboursCount=getNeighboursCount();
+    const cellsToAdd=new Set();
+    const neighboursCount=getNeighboursCount();
 
-        for(const [cell,count] of Object.entries(neighboursCount)){
-            if ((count === 2 || count === 3) && game.activeCells.has(cell)) {
-                continue;
-            }
-
-            if ( (count<2 || count>3) && game.activeCells.has(cell)){
-                cellsToRemove.add(cell);
-                
-            }
-
-            if(count===3 && !game.activeCells.has(cell)){
-                cellsToAdd.add(cell);
-                
-            }
+    for(const [cell,count] of Object.entries(neighboursCount)){
+        if ((count === 2 || count === 3) && game.activeCells.has(cell)) {
+            continue;
         }
-       
-        removeCells(cellsToRemove);
-        addCells(cellsToAdd);
+
+        if ( (count<2 || count>3) && game.activeCells.has(cell)){
+            cellsToRemove.add(cell);
+            
+        }
+
+        if(count===3 && !game.activeCells.has(cell)){
+            cellsToAdd.add(cell);
+            
+        }
+    }
+    
+    removeCells(game,cellsToRemove);
+    addCells(game,cellsToAdd);
 
 }
 
 export function populateBoard(game){
+    // randomise cells
 
 }
