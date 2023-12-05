@@ -80,10 +80,11 @@ export function addActiveCells(game, cells) {
   }
 }
 function getRandomCell( game,maxX,maxY) {
-    const min=0;
-    const cellSize = game.cellSize;
-    const randomX=Math.floor(Math.random() * (maxX - min + 1)) + min;
-    const randomY=Math.floor(Math.random() * (maxY - min + 1)) + min;
+    const minX=Math.floor(maxX * Math.random()) ;
+    const minY=Math.floor(maxY * Math.random());
+    const cellSize = 150;
+    const randomX=Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+    const randomY=Math.floor(Math.random() * (maxY - minY + 1)) + minY;
     const gridX = Math.floor(randomX / cellSize);
     const gridY = Math.floor(randomY / cellSize);
   return `${gridX},${gridY}`;
@@ -95,7 +96,7 @@ export function populateBoard(game,nCells) {
     const maxY=game.height;
 
     for(let i=0;i<nCells;i++){
-        const randomCell=getRandomCell(game,maxX,maxY);
+        const randomCell=getRandomCell(game,maxX*10,maxY*10);
         game.activeCells.add(randomCell);
     }
 
