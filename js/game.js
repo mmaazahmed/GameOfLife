@@ -79,9 +79,27 @@ export function addActiveCells(game, cells) {
     game.activeCells.add(cell);
   }
 }
+function getRandomCell( game,maxX,maxY) {
+    const min=0;
+    const cellSize = game.cellSize;
+    const randomX=Math.floor(Math.random() * (maxX - min + 1)) + min;
+    const randomY=Math.floor(Math.random() * (maxY - min + 1)) + min;
+    const gridX = Math.floor(randomX / cellSize);
+    const gridY = Math.floor(randomY / cellSize);
+  return `${gridX},${gridY}`;
+}
 
-export function populateBoard(game) {
-  // randomise cells
+export function populateBoard(game,nCells) {
+    console.log("im here in popia")
+    const maxX=game.width;
+    const maxY=game.height;
+
+    for(let i=0;i<nCells;i++){
+        const randomCell=getRandomCell(game,maxX,maxY);
+        game.activeCells.add(randomCell);
+    }
+
+  console.log(game.activeCells);
 }
 
 export function clearBoard(game) {
