@@ -97,7 +97,7 @@ export function populateBoard(game,nCells) {
         game.activeCells.add(randomCell);
     }
 }
-export function sierpińskiTriangle(game,nCells){
+export function sierpinskiTriangle(game,nCells){
     for(let i=0;i<nCells;i++){
         const midCell=Math.floor(game.width/game.cellSize);
         const randomCell=`${midCell/2},${i+10}`;
