@@ -1,31 +1,16 @@
-const colorPallet={
-  c1: "rgb(248, 112, 96)",
-  c2:'#102542',
-  c3:"#b3a394",
-  c4: "white",
-  c5:"#F7CCC7",
-  c6:"#306EC5",
-  c7:"#CDD7D6",
-  c8:"#e55381",
-  c9:"#190B28",
-  c10:"#685762",
-  c11:"#EFA9AE",
-  c12:"#F4BACC",
-  c13:"#f7cbd9",
-  c14:"#f9dce5"
-}
-const CELL_COLOR=colorPallet.c8; //c12 also looks good
-const CELL_BOUNDRY_COLOR = colorPallet.c4;
-const GRID_COLOR = colorPallet.c14;
+import {ColorPalette} from "./utils/colorPalette.js";
+const CELL_COLOR=ColorPalette.c8; //c12 also looks good
+const CELL_BOUNDRY_COLOR = ColorPalette.c4;
+const GRID_COLOR = ColorPalette.c14;
 const DOT_COLOR = "blue";
 
 function set_color(game){
-  game.canvas.style.background=colorPallet.c11;
+  game.canvas.style.background=ColorPalette.c11;
 
 }
 const Grid={
   drawBoundary: function(ctx, game) { //might not be necassary. use css?
-    ctx.strokeStyle = colorPallet.c1;
+    ctx.strokeStyle = ColorPalette.c1;
     ctx.lineWidth=game.cellSize/5;
     ctx.strokeRect(0, 0, game.width, game.height);
 
@@ -76,14 +61,14 @@ const Grid={
 }
 
 const ActiveCell={
-  applyColorPallet: function(ctx,cellSize){
+  applyColorPalette: function(ctx,cellSize){
     ctx.fillStyle = CELL_COLOR;
     ctx.strokeStyle = CELL_BOUNDRY_COLOR;
     ctx.lineWidth = cellSize / 20;
   },
   drawCircle:function (game, ctx, x, y) {
     const cellSize = game.cellSize;
-    this.applyColorPallet(ctx,cellSize);
+    this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
     ctx.arc(cellSize * x + cellSize / 2,cellSize * y + cellSize/ 2,cellSize / 2,0,Math.PI * 2);
     ctx.fill();
@@ -92,7 +77,7 @@ const ActiveCell={
   },
   drawSquare:function(game, ctx, x, y) {
     const cellSize = game.cellSize;
-    this.applyColorPallet(ctx,cellSize);
+    this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
     ctx.rect(cellSize * x, cellSize * y, cellSize, cellSize);
     ctx.fill();
