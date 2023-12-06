@@ -72,24 +72,23 @@ function drawGrid(ctx, game) {
   ctx.closePath();
 }
 const ActiveCell={
-  drawCircle:function (game, ctx, x, y) {
-    let v_offset = game.cellSize;
-    let h_offset = game.cellSize;
+  applyColorPallet: function(ctx,cellSize){
     ctx.fillStyle = CELL_COLOR;
-    ctx.beginPath();
     ctx.strokeStyle = CELL_BOUNDRY_COLOR;
-    ctx.arc(h_offset * x + h_offset / 2,v_offset * y + h_offset / 2,h_offset / 2,0,Math.PI * 2);
+    ctx.lineWidth = cellSize / 20;
+  },
+  drawCircle:function (game, ctx, x, y) {
+    const cellSize = game.cellSize;
+    this.applyColorPallet(ctx,cellSize);
+    ctx.beginPath();
+    ctx.arc(cellSize * x + cellSize / 2,cellSize * y + cellSize/ 2,cellSize / 2,0,Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
   },
   drawSquare:function(game, ctx, x, y) {
     const cellSize = game.cellSize;
-
-    ctx.fillStyle = CELL_COLOR;
-    ctx.strokeStyle = CELL_BOUNDRY_COLOR;
-    ctx.lineWidth = cellSize / 20;
-  
+    this.applyColorPallet(ctx,cellSize);
     ctx.beginPath();
     ctx.rect(cellSize * x, cellSize * y, cellSize, cellSize);
     ctx.fill();
