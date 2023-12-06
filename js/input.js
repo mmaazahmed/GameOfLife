@@ -11,19 +11,19 @@ const Scroll = {
 
   up: function (game, event) {
     if (event.key !== 'ArrowUp') { return; }
-    Scroll.scrollCells(game, 0, Scroll.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, Scroll.SCROLL_INCREMENT);
   },
   down: function (game, event) {
     if (event.key !== 'ArrowDown') { return; }
-    Scroll.scrollCells(game, 0, -Scroll.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, -Scroll.SCROLL_INCREMENT);
   },
   left: function (game, event) {
     if (event.key !== 'ArrowLeft') { return; }
-    Scroll.scrollCells(game, Scroll.SCROLL_INCREMENT, 0);
+    this.scrollCells(game, Scroll.SCROLL_INCREMENT, 0);
   },
   right: function (game, event) {
     if (event.key !== 'ArrowRight') { return; }
-    Scroll.scrollCells(game, -Scroll.SCROLL_INCREMENT, 0);
+    this.scrollCells(game, -Scroll.SCROLL_INCREMENT, 0);
   },
   scrollCells: function (game, dx, dy) {
     const updatedCells = new Set();
