@@ -10,7 +10,6 @@ export function gameLoop(ctx, game) {
   if (game.isPaused) { return; }
 
   if (deltaTime >= game.updateInterval) {
-    console.log("im here");
     updateGame(game);
     game.lastUpdateTime = currentTime;
   }

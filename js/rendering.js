@@ -103,6 +103,7 @@ export function renderGame(ctx, game) {
   clearCanvas(ctx, game);
   Grid.drawSquareGrid(ctx, game);
   ActiveCell.drawAsSquare(ctx, game);
+
 }
 export function clearCanvas(ctx, game) {
   ctx.clearRect(0, 0, game.width, game.height);

@@ -7,23 +7,23 @@
  * 
  */
 const Scroll = {
-    SCROLL_INCREMENT: 2,
+    SCROLL_INCREMENT: 5,
 
   up: function (game, event) {
     if (event.key !== 'ArrowUp') { return; }
-    this.scrollCells(game, 0, Scroll.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, this.SCROLL_INCREMENT);
   },
   down: function (game, event) {
     if (event.key !== 'ArrowDown') { return; }
-    this.scrollCells(game, 0, -Scroll.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, -this.SCROLL_INCREMENT);
   },
   left: function (game, event) {
     if (event.key !== 'ArrowLeft') { return; }
-    this.scrollCells(game, Scroll.SCROLL_INCREMENT, 0);
+    this.scrollCells(game, this.SCROLL_INCREMENT, 0);
   },
   right: function (game, event) {
     if (event.key !== 'ArrowRight') { return; }
-    this.scrollCells(game, -Scroll.SCROLL_INCREMENT, 0);
+    this.scrollCells(game, -this.SCROLL_INCREMENT, 0);
   },
   scrollCells: function (game, dx, dy) {
     const updatedCells = new Set();
@@ -39,14 +39,15 @@ const Scroll = {
 };
 
 const Zoom={
+    ZOOM_INCREMMENT: 2,
     In: function(game, event) {
         if (event.keyCode !== 107) { return; }
-        game.cellSize += 1;
+        game.cellSize =Math.min(200,game.cellSize+ this.ZOOM_INCREMMENT);
       },
     Out:function(game, event) {
         if (event.keyCode !== 109) { return; }
         const prevCellSize=game.cellSize;
-        game.cellSize = Math.max(3, game.cellSize-1);
+        game.cellSize = Math.max(1, game.cellSize-this.ZOOM_INCREMMENT);
       },
     centerOnZoom: function (game,event){
         //to do

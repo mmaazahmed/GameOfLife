@@ -97,6 +97,15 @@ export function populateBoard(game,nCells) {
         game.activeCells.add(randomCell);
     }
 }
+export function coolPattern(game,nCells){
+    for(let i=0;i<nCells;i++){
+        const midCell=Math.floor(game.width/game.cellSize);
+        const randomCell=`${midCell/2},${i+10}`;
+
+        game.activeCells.add(randomCell);
+
+    }
+}
 
 export function clearBoard(game) {
   game.activeCells=new Set();
