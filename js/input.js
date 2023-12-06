@@ -9,20 +9,20 @@
 const Scroll = {
     SCROLL_INCREMENT: 2,
 
-  scrollUp: function (game, event) {
-    if (event.keyCode !== 38) { return; }
+  up: function (game, event) {
+    if (event.key !== 'ArrowUp') { return; }
     Scroll.scrollCells(game, 0, Scroll.SCROLL_INCREMENT);
   },
-  scrollDown: function (game, event) {
-    if (event.keyCode !== 40) { return; }
+  down: function (game, event) {
+    if (event.key !== 'ArrowDown') { return; }
     Scroll.scrollCells(game, 0, -Scroll.SCROLL_INCREMENT);
   },
-  scrollLeft: function (game, event) {
-    if (event.keyCode !== 37) { return; }
+  left: function (game, event) {
+    if (event.key !== 'ArrowLeft') { return; }
     Scroll.scrollCells(game, Scroll.SCROLL_INCREMENT, 0);
   },
-  scrollRight: function (game, event) {
-    if (event.keyCode !== 39) { return; }
+  right: function (game, event) {
+    if (event.key !== 'ArrowRight') { return; }
     Scroll.scrollCells(game, -Scroll.SCROLL_INCREMENT, 0);
   },
   scrollCells: function (game, dx, dy) {
@@ -103,10 +103,10 @@ function getMousePosOnBoard(canvas, game, event) {
 
 
 function handleKeyPress(game, event) {
-    Scroll.scrollUp(game, event);
-    Scroll.scrollDown(game, event);
-    Scroll.scrollLeft(game, event);
-    Scroll.scrollRight(game, event);
+    Scroll.up(game, event);
+    Scroll.down(game, event);
+    Scroll.left(game, event);
+    Scroll.right(game, event);
     isPaused(game, event);
     Zoom.In(game, event);
     Zoom.Out(game, event);
