@@ -1,4 +1,3 @@
-// const CELL_COLOR = "#fec3a6";
 const colorPallet={
   c1: "rgb(248, 112, 96)",
   c2:'#102542',
@@ -14,16 +13,12 @@ const colorPallet={
   c12:"#F4BACC",
   c13:"#f7cbd9",
   c14:"#f9dce5"
-
-
-
 }
 const CELL_COLOR=colorPallet.c8; //c12 also looks good
-
 const CELL_BOUNDRY_COLOR = colorPallet.c4;
-// const GRID_COLOR='#EFE9AE';
 const GRID_COLOR = colorPallet.c14;
 const DOT_COLOR = "blue";
+
 function set_color(game){
   game.canvas.style.background=colorPallet.c11;
 
@@ -76,43 +71,42 @@ function drawGrid(ctx, game) {
   ctx.stroke();
   ctx.closePath();
 }
+const ActiveCell={
+  drawCircle:function (game, ctx, x, y) {
+    let v_offset = game.cellSize;
+    let h_offset = game.cellSize;
+    ctx.fillStyle = CELL_COLOR;
+    ctx.beginPath();
+    ctx.strokeStyle = CELL_BOUNDRY_COLOR;
+    ctx.arc(h_offset * x + h_offset / 2,v_offset * y + h_offset / 2,h_offset / 2,0,Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+  },
+  drawSquare:function(game, ctx, x, y) {
+    const cellSize = game.cellSize;
 
-function drawCellAsCircle(game, ctx, x, y) {
-  //circle
-  let v_offset = game.cellSize;
-  let h_offset = game.cellSize;
-  ctx.fillStyle = CELL_COLOR;
-  ctx.beginPath();
-  ctx.strokeStyle = CELL_BOUNDRY_COLOR;
-  ctx.arc(
-    h_offset * x + h_offset / 2,
-    v_offset * y + h_offset / 2,
-    h_offset / 2,
-    0,
-    Math.PI * 2
-  );
-  ctx.fill();
-  // ctx.stroke();
-  ctx.closePath();
-}
-function drawCellAsSqaure(game, ctx, x, y) {
-  const cellSize = game.cellSize;
-
-  ctx.fillStyle = CELL_COLOR;
-  ctx.strokeStyle = CELL_BOUNDRY_COLOR;
-  ctx.lineWidth = cellSize / 20;
-
-  ctx.beginPath();
-  ctx.rect(cellSize * x, cellSize * y, cellSize, cellSize);
-  ctx.fill();
-  ctx.stroke();
-  ctx.closePath();
-}
-function drawActiveCells(ctx, game) {
-  for (const activeCell of game.activeCells) {
-    let [x, y] = activeCell.split(",").map(Number);
-    drawCellAsSqaure(game, ctx, x, y);
-    // drawCellAsCircle(game,ctx,x,y);
+    ctx.fillStyle = CELL_COLOR;
+    ctx.strokeStyle = CELL_BOUNDRY_COLOR;
+    ctx.lineWidth = cellSize / 20;
+  
+    ctx.beginPath();
+    ctx.rect(cellSize * x, cellSize * y, cellSize, cellSize);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+  },
+  drawAsCircle: function(ctx, game) {
+    for (const activeCell of game.activeCells) {
+      let [x, y] = activeCell.split(",").map(Number);
+      this.drawCircle(game, ctx, x, y);
+    }
+  },
+  drawAsSquare:function(ctx, game) {
+    for (const activeCell of game.activeCells) {
+      let [x, y] = activeCell.split(",").map(Number);
+      this.drawSquare(game, ctx, x, y);
+    }
   }
 }
 
@@ -120,8 +114,7 @@ export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
   drawGrid(ctx, game);
-  // drawGridAsDots(ctx,game);
-  drawActiveCells(ctx, game);
+  ActiveCell.drawAsSquare(ctx, game);
 }
 export function clearCanvas(ctx, game) {
   ctx.clearRect(0, 0, game.width, game.height);
