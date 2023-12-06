@@ -1,4 +1,4 @@
-import { initializeGame, populateBoard,coolPattern } from "./game.js";
+import { initializeGame, populateBoard,sierpińskiTriangle } from "./game.js";
 import { initializeInputListeners } from "./input.js";
 import { gameLoop } from "./gameLoop.js";
 
@@ -21,11 +21,11 @@ const game = initializeGame(
 initializeInputListeners(canvas, game);
 
 // const nCells=50000;
-const nCells=5000;
-// coolPattern(game,nCells)
+const nCells=1000;
+sierpińskiTriangle(game,nCells)
 
 let lastFrameTime = 0;
-populateBoard(game,nCells)
+// populateBoard(game,nCells)
 function showFps(){
   const currentTime=performance.now()
   const elapsedMilliseconds = currentTime - lastFrameTime;
