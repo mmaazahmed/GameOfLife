@@ -23,54 +23,53 @@ function set_color(game){
   game.canvas.style.background=colorPallet.c11;
 
 }
-function drawBoundary(ctx, game) {
-  ctx.rect(0, 0, game.width, game.height);
-  ctx.strokeStyle = GRID_COLOR;
-}
+const Grid={
+  drawBoundary: function(ctx, game) { //might not be necassary. use css?
+    ctx.strokeStyle = colorPallet.c1;
+    ctx.lineWidth=game.cellSize/5;
+    ctx.strokeRect(0, 0, game.width, game.height);
 
-function drawVerticalLines(ctx, game) {
-  const offset = game.cellSize;
-  for (let i = 1; i < game.width / offset; i++) {
-    const x = offset * Math.floor(i);
-    const y1 = 0;
-    const y2 = game.height;
-
-    ctx.moveTo(x, y1);
-    ctx.lineTo(x, y2);
-    // ctx.strokeStyle='black';
-  }
-}
-function drawHorizontalLines(ctx, game) {
-  const offset = game.cellSize;
-  for (let i = 1; i < game.height / offset; i++) {
-    const y = offset * Math.floor(i);
-    ctx.moveTo(0, y);
-    ctx.lineTo(game.width, y);
-    // ctx.strokeStyle='black';
-  }
-}
-function drawGridAsDots(ctx, game) {
-  const r = 2;
-  const cellSize = game.cellSize;
-
-  for (var x = 0; x < game.width; x += cellSize) {
-    for (var y = 0; y < game.height; y += cellSize) {
-      ctx.fillStyle = DOT_COLOR;
-      ctx.fillRect(x - r / 2, y - r / 2, r, r);
+  },
+  drawVerticals:function(ctx, game) {
+    const offset = game.cellSize;
+    for (let i = 1; i < game.width / offset; i++) {
+      const x = offset * Math.floor(i);
+      const y1 = 0;
+      const y2 = game.height;
+      ctx.moveTo(x, y1);
+      ctx.lineTo(x, y2);
+    }
+  },
+  drawHorizontals:function (ctx, game) {
+    const offset = game.cellSize;
+    for (let i = 1; i < game.height / offset; i++) {
+      const y = offset * Math.floor(i);
+      ctx.moveTo(0, y);
+      ctx.lineTo(game.width, y);
+    }
+  },
+  drawSqaureGrid: function (ctx, game) {
+    ctx.beginPath();
+    this.drawBoundary(ctx, game);
+    this.drawVerticals(ctx, game);
+    this.drawHorizontals(ctx, game);
+    ctx.strokeStyle = GRID_COLOR;
+    ctx.lineWidth = game.cellSize / 20;
+    ctx.stroke();
+    ctx.closePath();
+  },
+  drawDotGrid:function(ctx, game) {
+    const radius = 2;
+    const cellSize = game.cellSize;
+    for (let i = 0; i < game.width; i += cellSize) {
+      for (let j = 0; j < game.height; j += cellSize) {
+        ctx.fillStyle = DOT_COLOR;
+        ctx.fillRect(i - radius / 2, j - radius / 2, radius, radius);
+      }
     }
   }
 }
-function drawGrid(ctx, game) {
-  ctx.beginPath();
-  drawBoundary(ctx, game);
-  drawVerticalLines(ctx, game);
-  drawHorizontalLines(ctx, game);
-  ctx.strokeStyle = GRID_COLOR;
-  ctx.lineWidth = game.cellSize / 20;
 
-  ctx.stroke();
-  ctx.closePath();
-}
 const ActiveCell={
   applyColorPallet: function(ctx,cellSize){
     ctx.fillStyle = CELL_COLOR;
@@ -112,7 +111,7 @@ const ActiveCell={
 export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
-  drawGrid(ctx, game);
+  Grid.drawSqaureGrid(ctx, game);
   ActiveCell.drawAsSquare(ctx, game);
 }
 export function clearCanvas(ctx, game) {
