@@ -30,6 +30,7 @@ const Grid={
     ctx.strokeRect(0, 0, game.width, game.height);
 
   },
+
   drawVerticals:function(ctx, game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.width / offset; i++) {
@@ -40,6 +41,7 @@ const Grid={
       ctx.lineTo(x, y2);
     }
   },
+
   drawHorizontals:function (ctx, game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.height / offset; i++) {
@@ -48,7 +50,8 @@ const Grid={
       ctx.lineTo(game.width, y);
     }
   },
-  drawSqaureGrid: function (ctx, game) {
+
+  drawSquareGrid: function (ctx, game) {
     ctx.beginPath();
     this.drawBoundary(ctx, game);
     this.drawVerticals(ctx, game);
@@ -58,7 +61,8 @@ const Grid={
     ctx.stroke();
     ctx.closePath();
   },
-  drawDotGrid:function(ctx, game) {
+
+  drawDotGrid:function(ctx, game) { //consider deleting feature
     const radius = 2;
     const cellSize = game.cellSize;
     for (let i = 0; i < game.width; i += cellSize) {
@@ -68,6 +72,7 @@ const Grid={
       }
     }
   }
+
 }
 
 const ActiveCell={
@@ -111,7 +116,7 @@ const ActiveCell={
 export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
-  Grid.drawSqaureGrid(ctx, game);
+  Grid.drawSquareGrid(ctx, game);
   ActiveCell.drawAsSquare(ctx, game);
 }
 export function clearCanvas(ctx, game) {
