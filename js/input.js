@@ -1,4 +1,11 @@
-
+/**
+ * todo:
+ * encapsulate mouseEventLogic
+ * encapsulate keyPressLogic
+ * consider chanigng Cell={} name to Board
+ * finish centerOnZoom,changeBackground,changeColor
+ * 
+ */
 const Scroll = {
     SCROLL_INCREMENT: 2,
 
@@ -56,7 +63,21 @@ const Speed={
         game.updateInterval = Math.min(500, game.updateInterval+10);
       }
 }
-
+const Cell={
+    add: function(game,clickedCell){
+        game.activeCells.add(clickedCell);
+    },
+    remove:function(game,clickedCell){
+        game.activeCells.delete(clickedCell);
+    },
+    changeBackground: function(canvas, event) {
+        // to do
+      },
+    changeColor:function (canvas, event) {
+        //todo
+      }
+    
+}
 
 function isPaused(game, event) {
   if (event.keyCode !== 32) { return; }
@@ -77,22 +98,6 @@ function getMousePosOnBoard(canvas, game, event) {
   const gridX = Math.floor(relativeX / cellSize);
   const gridY = Math.floor(relativeY / cellSize);
   return `${gridX},${gridY}`;
-}
-
-const Cell={
-    add: function(game,clickedCell){
-        game.activeCells.add(clickedCell);
-    },
-    remove:function(game,clickedCell){
-        game.activeCells.delete(clickedCell);
-    },
-    changeBackground: function(canvas, event) {
-        // to do
-      },
-    changeColor:function (canvas, event) {
-        //todo
-      }
-    
 }
 
 
@@ -117,11 +122,6 @@ function HandleMouseClick(canvas, game, event) {
         Cell.remove(game,clickedCell);
     }
 }
-
-
-
-
-
 
 export function initializeInputListeners(canvas, game) {
     document.addEventListener("keydown", (event) => handleKeyPress(game, event));
