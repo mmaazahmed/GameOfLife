@@ -29,11 +29,11 @@ function getNeighboursCount(game) {
 }
 
 function getNeighbours(x, y) {
-  const neighbours = []; //consider imeplementing it as a set
+  const neighbours = new Set(); 
   for (let i = x - 1; i <= x + 1; i++) {
     for (let j = y - 1; j <= y + 1; j++) {
       if (i !== x || j !== y) {
-        neighbours.push(`${i},${j}`);
+        neighbours.add(`${i},${j}`);
       }
     }
   }
@@ -42,11 +42,11 @@ function getNeighbours(x, y) {
 export function initializeGame(canvas,width, height, cellSize, timeToNextGen) {
   return {
     canvas,
-    width: width,
-    height: height,
-    cellSize: cellSize,
+    width,
+    height,
+    cellSize,
     activeCells: new Set(),
-    isPaused: true,
+    isPaused: false,
     lastUpdateTime: performance.now(),
     updateInterval: timeToNextGen,
   };
@@ -70,7 +70,6 @@ export function updateGame(game) {
       cellsToAdd.add(cell);
     }
   }
-
   removeCells(game, cellsToRemove);
   addCells(game, cellsToAdd);
 }
@@ -91,18 +90,14 @@ function getRandomCell( game,maxX,maxY) {
 }
 
 export function populateBoard(game,nCells) {
-    console.log("im here in popia")
     const maxX=game.width;
     const maxY=game.height;
-
     for(let i=0;i<nCells;i++){
         const randomCell=getRandomCell(game,maxX*10,maxY*10);
         game.activeCells.add(randomCell);
     }
-
-  console.log(game.activeCells);
 }
 
 export function clearBoard(game) {
-  //clear board. future feature
+  game.activeCells=new Set();
 }

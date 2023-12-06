@@ -9,17 +9,23 @@ const colorPallet={
   c7:"#CDD7D6",
   c8:"#e55381",
   c9:"#190B28",
-  c10:"#685762"
+  c10:"#685762",
+  c11:"#EFA9AE",
+  c12:"#F4BACC",
+  c13:"#f7cbd9",
+  c14:"#f9dce5"
+
 
 
 }
-const CELL_COLOR=colorPallet.c8;
+const CELL_COLOR=colorPallet.c8; //c12 also looks good
+
 const CELL_BOUNDRY_COLOR = colorPallet.c4;
 // const GRID_COLOR='#EFE9AE';
-const GRID_COLOR = colorPallet.c10;
+const GRID_COLOR = colorPallet.c14;
 const DOT_COLOR = "blue";
 function set_color(game){
-  game.canvas.style.background=colorPallet.c;
+  game.canvas.style.background=colorPallet.c11;
 
 }
 function drawBoundary(ctx, game) {

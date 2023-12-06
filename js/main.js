@@ -20,10 +20,8 @@ const game = initializeGame(
 );
 initializeInputListeners(canvas, game);
 
-let cells = [];
 const nCells=50000;
-// cells = ["0,1", "1,2", "2,0", "2,1", "2,2", "7,7", "7,8", "6,10", "7,5"];
-// addActiveCells(game, cells);
+
 populateBoard(game,nCells)
 function animate() {
   requestAnimationFrame(animate);
