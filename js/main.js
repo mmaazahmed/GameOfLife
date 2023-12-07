@@ -2,7 +2,7 @@ import { initializeGame, populateBoard,sierpinskiTriangle } from "./game.js";
 import { initializeInputListeners } from "./input.js";
 import { gameLoop } from "./gameLoop.js";
 
-const cell_size = 20;
+const cell_size = 2;
 const canvas = document.getElementById("mycanvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
