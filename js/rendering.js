@@ -79,7 +79,7 @@ const ActiveCell={
     const cellSize = game.cellSize;
     this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
-    ctx.rect(cellSize * x, cellSize * y, cellSize, cellSize);
+    ctx.rect(cellSize*x, cellSize*y, cellSize, cellSize);
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
@@ -93,35 +93,32 @@ const ActiveCell={
     }
   },
   drawAsSquare:function(ctx, game) {
-   
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
 
       if(!this.isInView(game,x,y)){ continue;}
-      // this.isInView(game,x,y);
-      // // const gridX=Math.floor(game.width/game.cellSize);
-      // const gridY=Math.floor(game.height/game.cellSize);
-      // console.log(gridX,gridY);
 
       this.drawSquare(game, ctx, x, y);
     }
   },
+  
   isInView: function(game,x,y){
 
     const maxGridX=Math.floor(game.width/game.cellSize);
     const maxGridY=Math.floor(game.height/game.cellSize);
     const isInView=( (x<=maxGridX) && (y<=maxGridY)  );
     
-    return ( isInView);
+    return (isInView);
 }
 }
-
 
 export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
   Grid.drawSquareGrid(ctx, game);
+  // ActiveCell.drawAsSquare(ctx, game);
   ActiveCell.drawAsCircle(ctx, game);
+
 
 }
 export function clearCanvas(ctx, game) {

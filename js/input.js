@@ -17,9 +17,11 @@ const Scroll = {
     if (event.key !== 'ArrowDown') { return; }
     this.scrollCells(game, 0, -this.SCROLL_INCREMENT);
   },
-  left: function (game, event) {
+  left: function (ctx,game, event) {
     if (event.key !== 'ArrowLeft') { return; }
     this.scrollCells(game, this.SCROLL_INCREMENT, 0);
+
+
   },
   right: function (game, event) {
     if (event.key !== 'ArrowRight') { return; }
@@ -46,10 +48,15 @@ const Zoom={
       },
     Out:function(game, event) {
         if (event.keyCode !== 109) { return; }
-        const prevCellSize=game.cellSize;
         game.cellSize = Math.max(1, game.cellSize-this.ZOOM_INCREMMENT);
+        // this.centerOnZoom(canvas,game,event,prevCellSize);
       },
-    centerOnZoom: function (game,event){
+    centerOnZoom: function (canvas,game,event,prevCellSize){
+      const {mouseX,mouseY}=getMousePosOnBoard(canvas,game,event);
+      const dx = (game.cellSize - prevCellSize) * (mouseX / game.canvas.width);
+      const dy = (game.cellSize - prevCellSize) * (mouseY / game.canvas.height);
+      console.log(dx,dy);
+      Scroll.scrollCells(game,dx,dy);
         //to do
     }
     
@@ -103,10 +110,10 @@ function getMousePosOnBoard(canvas, game, event) {
 
 
 
-function handleKeyPress(game, event) {
+function handleKeyPress(ctx,game, event) {
     Scroll.up(game, event);
     Scroll.down(game, event);
-    Scroll.left(game, event);
+    Scroll.left(ctx,game, event);
     Scroll.right(game, event);
     isPaused(game, event);
     Zoom.In(game, event);
@@ -124,7 +131,7 @@ function HandleMouseClick(canvas, game, event) {
     }
 }
 
-export function initializeInputListeners(canvas, game) {
-    document.addEventListener("keydown", (event) => handleKeyPress(game, event));
+export function initializeInputListeners(ctx,canvas, game) {
+    document.addEventListener("keydown", (event) => handleKeyPress(ctx,game, event));
     document.addEventListener("click", (event) =>HandleMouseClick(canvas, game, event));
 }

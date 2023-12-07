@@ -9,6 +9,7 @@ function addCells(game, cellsToAdd) {
     game.activeCells.add(cell);
   }
 }
+
 function getNeighboursCount(game) {
   const neighboursCount = {};
   for (const activeCell of game.activeCells) {
@@ -18,7 +19,6 @@ function getNeighboursCount(game) {
       neighboursCount[neighbour] = (neighboursCount[neighbour] || 0) + 1;
     }
   }
-
   // If a cell has no live neighbors, initialize its count to 0
   for (const activeCell of game.activeCells) {
     if (!neighboursCount[activeCell]) {
@@ -29,6 +29,7 @@ function getNeighboursCount(game) {
 }
 
 function getNeighbours(x, y) {
+  
   const neighbours = new Set(); 
   for (let i = x - 1; i <= x + 1; i++) {
     for (let j = y - 1; j <= y + 1; j++) {
@@ -38,6 +39,40 @@ function getNeighbours(x, y) {
     }
   }
   return neighbours;
+}
+
+export function updateGame(game) {
+  const cellsToRemove = new Set();
+  const cellsToAdd = new Set();
+  const neighboursCount = getNeighboursCount(game);
+
+  for (const [cell, count] of Object.entries(neighboursCount)) {
+    const hasActiveCell=game.activeCells.has(cell);
+    if ((count === 2 || count === 3) && hasActiveCell ) {
+      continue;
+    }
+
+    if ((count < 2 || count > 3) && hasActiveCell) {
+      cellsToRemove.add(cell);
+    }
+
+    if (count === 3 && !hasActiveCell) {
+      cellsToAdd.add(cell);
+    }
+  }
+  removeCells(game, cellsToRemove);
+  addCells(game, cellsToAdd);
+}
+
+function getRandomCell( game,maxX,maxY) {
+    const minX=Math.floor(maxX * Math.random()) ;
+    const minY=Math.floor(maxY * Math.random());
+    const cellSize = 150;
+    const randomX=Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+    const randomY=Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+    const gridX = Math.floor(randomX / cellSize);
+    const gridY = Math.floor(randomY / cellSize);
+  return `${gridX},${gridY}`;
 }
 export function initializeGame(canvas,width, height, cellSize, timeToNextGen) {
   return {
@@ -52,43 +87,6 @@ export function initializeGame(canvas,width, height, cellSize, timeToNextGen) {
   };
 }
 
-export function updateGame(game) {
-  const cellsToRemove = new Set();
-  const cellsToAdd = new Set();
-  const neighboursCount = getNeighboursCount(game);
-
-  for (const [cell, count] of Object.entries(neighboursCount)) {
-    if ((count === 2 || count === 3) && game.activeCells.has(cell)) {
-      continue;
-    }
-
-    if ((count < 2 || count > 3) && game.activeCells.has(cell)) {
-      cellsToRemove.add(cell);
-    }
-
-    if (count === 3 && !game.activeCells.has(cell)) {
-      cellsToAdd.add(cell);
-    }
-  }
-  removeCells(game, cellsToRemove);
-  addCells(game, cellsToAdd);
-}
-export function addActiveCells(game, cells) {
-  for (const cell of cells) {
-    game.activeCells.add(cell);
-  }
-}
-function getRandomCell( game,maxX,maxY) {
-    const minX=Math.floor(maxX * Math.random()) ;
-    const minY=Math.floor(maxY * Math.random());
-    const cellSize = 150;
-    const randomX=Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-    const randomY=Math.floor(Math.random() * (maxY - minY + 1)) + minY;
-    const gridX = Math.floor(randomX / cellSize);
-    const gridY = Math.floor(randomY / cellSize);
-  return `${gridX},${gridY}`;
-}
-
 export function populateBoard(game,nCells) {
     const maxX=game.width;
     const maxY=game.height;
@@ -99,14 +97,20 @@ export function populateBoard(game,nCells) {
 }
 export function sierpinskiTriangle(game,nCells){
     for(let i=0;i<nCells;i++){
-        const midCell=Math.floor(game.width/game.cellSize);
-        const randomCell=`${midCell/2},${i+10}`;
+        const totalHorizontalCells= Math.floor(game.width/game.cellSize);
+        const midCell=Math.floor(totalHorizontalCells/2);
+
+        const randomCell=`${midCell},${i+10}`;
 
         game.activeCells.add(randomCell);
 
     }
 }
-
+export function addActiveCells(game, cells) {
+  for (const cell of cells) {
+    game.activeCells.add(cell);
+  }
+}
 export function clearBoard(game) {
   game.activeCells=new Set();
 }
