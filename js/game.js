@@ -98,9 +98,11 @@ export function populateBoard(game,nCells) {
 export function sierpinskiTriangle(game,nCells){
     for(let i=0;i<nCells;i++){
         const totalHorizontalCells= Math.floor(game.width/game.cellSize);
-        const midCell=Math.floor(totalHorizontalCells/2);
+        const midX=Math.floor(totalHorizontalCells/2);
+      let y=Math.floor(game.height/20);
+        // y=Math.floor(game.height/nCells);
 
-        const randomCell=`${midCell},${i+10}`;
+        const randomCell=`${midX},${i}`;
 
         game.activeCells.add(randomCell);
 

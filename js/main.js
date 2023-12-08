@@ -2,13 +2,13 @@ import { initializeGame, populateBoard,sierpinskiTriangle } from "./game.js";
 import { initializeInputListeners } from "./input.js";
 import { gameLoop } from "./gameLoop.js";
 
-const cell_size = 2;
+const cell_size = 3;
 const canvas = document.getElementById("mycanvas");
 canvas.height = window.innerHeight; canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
 
 
-const updateInterval = 0;
+const updateInterval =0;
 const game = initializeGame(
   canvas,
   canvas.width,
@@ -18,7 +18,7 @@ const game = initializeGame(
 );
 initializeInputListeners(canvas, game);
 
-const nCells=100;
+const nCells=Math.floor(game.height/game.cellSize) -5;
 sierpinskiTriangle(game,nCells);
 let lastFrameTime = 0;
 // populateBoard(game,nCells)
