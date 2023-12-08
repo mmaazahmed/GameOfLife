@@ -1,5 +1,5 @@
 import {ColorPalette} from "./utils/colorPalette.js";
-const CELL_COLOR=ColorPalette.c8; //c12 also looks good
+const CELL_COLOR=ColorPalette.c15; //c12 also looks good
 const CELL_BOUNDRY_COLOR = ColorPalette.c4;
 const GRID_COLOR = ColorPalette.c14;
 const DOT_COLOR = "blue";

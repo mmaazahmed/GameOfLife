@@ -12,5 +12,6 @@ export const ColorPalette={
     c11:"#EFA9AE",
     c12:"#F4BACC",
     c13:"#f7cbd9",
-    c14:"#f9dce5"
+    c14:"#f9dce5",
+    c15:" #fe3a78 "
   }
