@@ -99,15 +99,11 @@ function getMousePosOnBoard(ctx, game, event) {
 
   const { clientX, clientY } = event;
   const { left: canvasX, top: canvasY } = canvasRect;
+  const { relativeX, relativeY } = { relativeX: clientX - canvasX, relativeY: clientY - canvasY };
+  const { gridX, gridY } = { gridX: Math.floor(relativeX / cellSize), gridY: Math.floor(relativeY / cellSize) };
 
-  const relativeX = clientX - canvasX;
-  const relativeY = clientY - canvasY;
-
-  const gridX = Math.floor(relativeX / cellSize);
-  const gridY = Math.floor(relativeY / cellSize);
   return `${gridX},${gridY}`;
 }
-
 
 
 function handleKeyPress(ctx,game, event) {
@@ -123,7 +119,7 @@ function handleKeyPress(ctx,game, event) {
 }
 
 function HandleMouseClick(ctx, game, event) {
-    const clickedCell = getMousePosOnBoard(canvas,ctx, game, event);
+    const clickedCell = getMousePosOnBoard(ctx, game, event);
     if (!game.activeCells.has(clickedCell)) {
         Cell.add(game,clickedCell);
     }else{
