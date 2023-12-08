@@ -12,3 +12,5 @@ A live server is needed to run this project.
  speed up    : numpad '8'  
  slow down   : numpad '9'  
  pause       : spacebar
+<img loading="lazy" width="30px" src="./1.png" alt="GOL" />
+<img loading="lazy" width="30px" src="./2.png" alt="GOL" />
