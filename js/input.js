@@ -17,7 +17,7 @@ const Scroll = {
     if (event.key !== 'ArrowDown') { return; }
     this.scrollCells(game, 0, -this.SCROLL_INCREMENT);
   },
-  left: function (ctx,game, event) {
+  left: function (game, event) {
     if (event.key !== 'ArrowLeft') { return; }
     this.scrollCells(game, this.SCROLL_INCREMENT, 0);
 
@@ -41,25 +41,35 @@ const Scroll = {
 };
 
 const Zoom={
-    ZOOM_INCREMMENT: 2,
-    In: function(game, event) {
+    getZoomFactor: function(game,deltaY){
+      let zoomFactor=Math.min(5,Math.abs(deltaY))/20;
+      zoomFactor= deltaY<0 ? 1-zoomFactor : zoomFactor+1;
+      return zoomFactor
+    },
+    in: function(game, event) {
         if (event.keyCode !== 107) { return; }
-        game.cellSize =Math.min(200,game.cellSize+ this.ZOOM_INCREMMENT);
+        game.cellSize =Math.min(200,game.cellSize*this.getZoomFactor(game,5));
       },
-    Out:function(game, event) {
+
+    out:function(game, event) {
         if (event.keyCode !== 109) { return; }
-        game.cellSize = Math.max(1, game.cellSize-this.ZOOM_INCREMMENT);
-        // this.centerOnZoom(canvas,game,event,prevCellSize);
+        game.cellSize = Math.max(1, game.cellSize*this.getZoomFactor(game,-5));
       },
-    centerOnZoom: function (canvas,game,event,prevCellSize){
-      const {mouseX,mouseY}=getMousePosOnBoard(canvas,game,event);
-      const dx = (game.cellSize - prevCellSize) * (mouseX / game.canvas.width);
-      const dy = (game.cellSize - prevCellSize) * (mouseY / game.canvas.height);
-      console.log(dx,dy);
-      Scroll.scrollCells(game,dx,dy);
-        //to do
-    }
-    
+
+    gestureZoom:function(ctx,game,event){
+        const [oldmouseX,oldmouseY] =getMousePosOnBoard(ctx,game,event).split(",").map(Number);
+
+        let deltaY=Math.floor(event.deltaY);
+        const zoomFactor=this.getZoomFactor(game,deltaY);
+        game.cellSize=Math.min(50,Math.max(1,game.cellSize*zoomFactor));
+
+        const [newMouseX,newMouseY] = getMousePosOnBoard(ctx,game,event).split(",").map(Number);
+        let dx = newMouseX-oldmouseX;
+        let dy = newMouseY-oldmouseY;
+        Scroll.scrollCells(game,dx,0);
+        Scroll.scrollCells(game,0,dy);
+  
+      }
 }
 const Speed={
     up: function(game, event) {
@@ -78,8 +88,9 @@ const Cell={
     remove:function(game,clickedCell){
         game.activeCells.delete(clickedCell);
     },
-    changeBackground: function(canvas, event) {
-        // to do
+    changeBackground: function(ctx, event) {
+      // const canvas=ctx.canvas;
+        
       },
     changeColor:function (canvas, event) {
         //todo
@@ -99,6 +110,7 @@ function getMousePosOnBoard(ctx, game, event) {
 
   const { clientX, clientY } = event;
   const { left: canvasX, top: canvasY } = canvasRect;
+
   const { relativeX, relativeY } = { relativeX: clientX - canvasX, relativeY: clientY - canvasY };
   const { gridX, gridY } = { gridX: Math.floor(relativeX / cellSize), gridY: Math.floor(relativeY / cellSize) };
 
@@ -106,17 +118,20 @@ function getMousePosOnBoard(ctx, game, event) {
 }
 
 
-function handleKeyPress(ctx,game, event) {
+function handleKeyPress(game, event) {
+  console.log("im here");
     Scroll.up(game, event);
     Scroll.down(game, event);
-    Scroll.left(ctx,game, event);
+    Scroll.left(game, event);
     Scroll.right(game, event);
     isPaused(game, event);
-    Zoom.In(game, event);
-    Zoom.Out(game, event);
+    Zoom.in(game, event);
+    Zoom.out(game, event);
     Speed.up(game,event);
     Speed.down(game,event);
 }
+
+
 
 function HandleMouseClick(ctx, game, event) {
     const clickedCell = getMousePosOnBoard(ctx, game, event);
@@ -127,7 +142,11 @@ function HandleMouseClick(ctx, game, event) {
     }
 }
 
-export function initializeInputListeners(ctx, game) {
-    document.addEventListener("keydown", (event) => handleKeyPress(ctx,game, event));
-    document.addEventListener("click", (event) =>HandleMouseClick(ctx, game, event));
+export function initializeInputListeners(canvas, game) {
+    const ctx = canvas.getContext("2d");
+    document.addEventListener("keydown", (event) => handleKeyPress(game, event));
+
+    canvas.addEventListener("click", (event) =>HandleMouseClick( ctx,game, event));
+
+    canvas.addEventListener("wheel",(event)=>Zoom.gestureZoom(ctx,game,event));
 }

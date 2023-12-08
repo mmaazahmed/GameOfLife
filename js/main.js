@@ -4,9 +4,9 @@ import { gameLoop } from "./gameLoop.js";
 
 const cell_size = 2;
 const canvas = document.getElementById("mycanvas");
+canvas.height = window.innerHeight; canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+
 
 const updateInterval = 0;
 const game = initializeGame(
@@ -16,9 +16,9 @@ const game = initializeGame(
   cell_size,
   updateInterval
 );
-initializeInputListeners(ctx, game);
+initializeInputListeners(canvas, game);
 
-const nCells=400;
+const nCells=100;
 sierpinskiTriangle(game,nCells);
 let lastFrameTime = 0;
 // populateBoard(game,nCells)
