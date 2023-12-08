@@ -7,8 +7,6 @@ const canvas = document.getElementById("mycanvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-// canvas.style.background = "#ffac81";
-// canvas.style.background='#cdd7d6';
 
 const updateInterval = 0;
 const game = initializeGame(
@@ -18,7 +16,7 @@ const game = initializeGame(
   cell_size,
   updateInterval
 );
-initializeInputListeners(ctx,canvas, game);
+initializeInputListeners(ctx, game);
 
 const nCells=400;
 sierpinskiTriangle(game,nCells);

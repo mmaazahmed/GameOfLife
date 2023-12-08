@@ -93,9 +93,9 @@ function isPaused(game, event) {
 }
 
 
-function getMousePosOnBoard(canvas, game, event) {
+function getMousePosOnBoard(ctx, game, event) {
   const cellSize = game.cellSize;
-  const canvasRect = canvas.getBoundingClientRect();
+  const canvasRect = ctx.canvas.getBoundingClientRect();
 
   const { clientX, clientY } = event;
   const { left: canvasX, top: canvasY } = canvasRect;
@@ -122,8 +122,8 @@ function handleKeyPress(ctx,game, event) {
     Speed.down(game,event);
 }
 
-function HandleMouseClick(canvas, game, event) {
-    const clickedCell = getMousePosOnBoard(canvas, game, event);
+function HandleMouseClick(ctx, game, event) {
+    const clickedCell = getMousePosOnBoard(canvas,ctx, game, event);
     if (!game.activeCells.has(clickedCell)) {
         Cell.add(game,clickedCell);
     }else{
@@ -131,7 +131,7 @@ function HandleMouseClick(canvas, game, event) {
     }
 }
 
-export function initializeInputListeners(ctx,canvas, game) {
+export function initializeInputListeners(ctx, game) {
     document.addEventListener("keydown", (event) => handleKeyPress(ctx,game, event));
-    document.addEventListener("click", (event) =>HandleMouseClick(canvas, game, event));
+    document.addEventListener("click", (event) =>HandleMouseClick(ctx, game, event));
 }
