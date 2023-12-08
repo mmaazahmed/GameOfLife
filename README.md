@@ -5,10 +5,10 @@ A live server is needed to run this project.
 
 ## controls:
 
-left mouse-click: add cell  
- left mouse-click: remove cell  
- numpad '+': zoom in  
- numpad '-': zoom out  
- numpad 8: speed up  
- numpad 9: speed down  
- spacebar: pause
+ add cell    : left mouse-click  
+ remove cell : lleft moust-click
+ zoom in     :  numpad '+'  || scroll up  
+ zoom out    : numpad '-'   || scroll down    
+ speed up    : numpad '8'  
+ slow down   : numpad '9'  
+ pause       : spacebar
