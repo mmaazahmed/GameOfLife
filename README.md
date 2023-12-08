@@ -11,6 +11,6 @@ A live server is needed to run this project.
  zoom out    : numpad '-'  or scroll down    
  speed up    : numpad '8'  
  slow down   : numpad '9'  
- pause       : spacebar
-<img loading="lazy" width="30px" src="./1.png" alt="GOL" />
-<img loading="lazy" width="30px" src="./2.png" alt="GOL" />
+ pause       : spacebar  
+<img loading="lazy" width="300px" height="400px" src="./1.png" alt="GOL" />
+<img loading="lazy" width="300px" height="400px" src="./2.png" alt="GOL" />
