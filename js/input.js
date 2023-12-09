@@ -7,8 +7,7 @@
  * 
  */
 const Scroll = {
-    SCROLL_INCREMENT: 5,
-
+  SCROLL_INCREMENT: 5,
   up: function (game, event) {
     if (event.key !== 'ArrowUp') { return; }
     this.scrollCells(game, 0, this.SCROLL_INCREMENT);
@@ -20,27 +19,19 @@ const Scroll = {
   left: function (game, event) {
     if (event.key !== 'ArrowLeft') { return; }
     this.scrollCells(game, this.SCROLL_INCREMENT, 0);
-
-
   },
   right: function (game, event) {
     if (event.key !== 'ArrowRight') { return; }
     this.scrollCells(game, -this.SCROLL_INCREMENT, 0);
   },
   scrollCells: function (game, dx, dy) {
-    const updatedCells = new Set();
-  
-    for (const coordinate of game.activeCells) {
-      const [x, y] = coordinate.split(",").map(Number);
-      const newX = x + dx;
-      const newY = y + dy;
-      updatedCells.add(`${newX},${newY}`);
-    }
-    game.activeCells = updatedCells;
+    game.displayDx+=dx;
+    game.displayDy+=dy;
   }
 };
 
 const Zoom={
+    oldMousePos:'',
     getZoomFactor: function(game,deltaY){
       let zoomFactor=Math.min(5,Math.abs(deltaY))/20;
       zoomFactor= deltaY<0 ? 1-zoomFactor : zoomFactor+1;
@@ -55,21 +46,20 @@ const Zoom={
         if (event.keyCode !== 109) { return; }
         game.cellSize = Math.max(1, game.cellSize*this.getZoomFactor(game,-5));
       },
-
     gestureZoom:function(ctx,game,event){
-        const [oldmouseX,oldmouseY] =getMousePosOnBoard(ctx,game,event).split(",").map(Number);
-
+        this.oldMousePos =getMousePosOnBoard(ctx,game,event);
         let deltaY=Math.floor(event.deltaY);
         const zoomFactor=this.getZoomFactor(game,deltaY);
         game.cellSize=Math.min(50,Math.max(1,game.cellSize*zoomFactor));
-
-        const [newMouseX,newMouseY] = getMousePosOnBoard(ctx,game,event).split(",").map(Number);
-        let dx = newMouseX-oldmouseX;
-        let dy = newMouseY-oldmouseY;
-        Scroll.scrollCells(game,dx,0);
-        Scroll.scrollCells(game,0,dy);
-  
-      }
+        this.centerOnZoom(ctx,game,event);
+      },
+    centerOnZoom:function(ctx,game,event){
+      const [oldmouseX,oldmouseY] =this.oldMousePos.split(",").map(Number);
+      const [newMouseX,newMouseY] = getMousePosOnBoard(ctx,game,event).split(",").map(Number);
+      Scroll.scrollCells(game,newMouseX-oldmouseX,0);
+      Scroll.scrollCells(game,0,newMouseY-oldmouseY);
+      
+    }
 }
 const Speed={
     up: function(game, event) {

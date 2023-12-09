@@ -4,9 +4,10 @@ const CELL_BOUNDRY_COLOR = ColorPalette.c4;
 const GRID_COLOR = ColorPalette.c14;
 const DOT_COLOR = "blue";
 
+
+
 function set_color(game){
   game.canvas.style.background=ColorPalette.c11;
-
 }
 const Grid={
   drawBoundary: function(ctx, game) { //might not be necassary. use css?
@@ -57,7 +58,6 @@ const Grid={
       }
     }
   }
-
 }
 
 const ActiveCell={
@@ -88,8 +88,8 @@ const ActiveCell={
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
       if(!this.isInView(game,x,y)){continue;}
-
-      this.drawCircle(game, ctx, x, y);
+      const {displayDx:dx,displayDy:dy}=game;
+      this.drawCircle(game, ctx, x+dx, y+dy);
     }
   },
   drawAsSquare:function(ctx, game) {
@@ -97,8 +97,9 @@ const ActiveCell={
       let [x, y] = activeCell.split(",").map(Number);
 
       if(!this.isInView(game,x,y)){ continue;}
+      const {displayDx:dx,displayDy:dy}=game;
 
-      this.drawSquare(game, ctx, x, y);
+      this.drawSquare(game, ctx, x+dx, y+dy);
     }
   },
   
@@ -106,8 +107,8 @@ const ActiveCell={
 
     const maxGridX=Math.floor(game.width/game.cellSize);
     const maxGridY=Math.floor(game.height/game.cellSize);
-    const isInView=( (x<=maxGridX) && (y<=maxGridY)  );
-    
+    const {displayDx:dx,displayDy:dy}=game;
+    const isInView=( ( x+dx<=maxGridX) && ( y+dy<=maxGridY)  );
     return (isInView);
 }
 }
@@ -116,8 +117,8 @@ export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
   Grid.drawSquareGrid(ctx, game);
-  // ActiveCell.drawAsSquare(ctx, game);
-  ActiveCell.drawAsCircle(ctx, game);
+  ActiveCell.drawAsSquare(ctx, game);
+  // ActiveCell.drawAsCircle(ctx, game);
 
 
 }
