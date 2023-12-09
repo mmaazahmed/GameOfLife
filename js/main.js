@@ -9,6 +9,7 @@ const ctx = canvas.getContext("2d");
 
 
 const updateInterval =0;
+
 const game = initializeGame(
   canvas,
   canvas.width,
@@ -18,7 +19,8 @@ const game = initializeGame(
 );
 initializeInputListeners(canvas, game);
 
-const nCells=Math.floor(game.height/game.cellSize) -5;
+let nCells=Math.floor(game.height/game.cellSize) -5;
+// nCells=200;
 sierpinskiTriangle(game,nCells);
 let lastFrameTime = 0;
 // populateBoard(game,nCells)
