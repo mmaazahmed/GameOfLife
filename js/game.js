@@ -74,16 +74,18 @@ function getRandomCell( game,maxX,maxY) {
     const gridY = Math.floor(randomY / cellSize);
   return `${gridX},${gridY}`;
 }
-export function initializeGame(canvas,width, height, cellSize, timeToNextGen) {
+export function initializeGame(canvas,width, height, cellSize, updateInterval) {
   return {
     canvas,
     width,
     height,
     cellSize,
+    updateInterval,
     activeCells: new Set(),
     isPaused: false,
-    lastUpdateTime: performance.now(),
-    updateInterval: timeToNextGen,
+    lastUpdateTime: 0,
+    displayDx : 0,
+    displayDy : 0
   };
 }
 
@@ -100,7 +102,6 @@ export function sierpinskiTriangle(game,nCells){
         const totalHorizontalCells= Math.floor(game.width/game.cellSize);
         const midX=Math.floor(totalHorizontalCells/2);
       let y=Math.floor(game.height/20);
-        // y=Math.floor(game.height/nCells);
 
         const randomCell=`${midX},${i}`;
 
