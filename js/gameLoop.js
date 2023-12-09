@@ -1,4 +1,4 @@
-import { renderGame } from "./rendering.js";
+import { renderGame } from "./renderer.js";
 import { updateGame } from "./game.js";
 // consider combining with main.js
 export function gameLoop(ctx, game) {
