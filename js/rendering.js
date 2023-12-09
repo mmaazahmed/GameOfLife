@@ -117,8 +117,8 @@ export function renderGame(ctx, game) {
   set_color(game);
   clearCanvas(ctx, game);
   Grid.drawSquareGrid(ctx, game);
-  ActiveCell.drawAsSquare(ctx, game);
-  // ActiveCell.drawAsCircle(ctx, game);
+  // ActiveCell.drawAsSquare(ctx, game);
+  ActiveCell.drawAsCircle(ctx, game);
 
 
 }

@@ -3,26 +3,26 @@
  * encapsulate mouseEventLogic
  * encapsulate keyPressLogic
  * consider chanigng Cell={} name to Board
- * finish centerOnZoom,changeBackground,changeColor
+ * changeBackground,changeColor
  * 
  */
 const Scroll = {
-  SCROLL_INCREMENT: 5,
+  _scrollIncrement: 5,
   up: function (game, event) {
     if (event.key !== 'ArrowUp') { return; }
-    this.scrollCells(game, 0, this.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, this._scrollIncrement);
   },
   down: function (game, event) {
     if (event.key !== 'ArrowDown') { return; }
-    this.scrollCells(game, 0, -this.SCROLL_INCREMENT);
+    this.scrollCells(game, 0, -this._scrollIncrement);
   },
   left: function (game, event) {
     if (event.key !== 'ArrowLeft') { return; }
-    this.scrollCells(game, this.SCROLL_INCREMENT, 0);
+    this.scrollCells(game,this._scrollIncrement, 0);
   },
   right: function (game, event) {
     if (event.key !== 'ArrowRight') { return; }
-    this.scrollCells(game, -this.SCROLL_INCREMENT, 0);
+    this.scrollCells(game, -this._scrollIncrement, 0);
   },
   scrollCells: function (game, dx, dy) {
     game.displayDx+=dx;
@@ -31,7 +31,7 @@ const Scroll = {
 };
 
 const Zoom={
-    oldMousePos:'',
+    _oldMousePos:'',
     getZoomFactor: function(game,deltaY){
       let zoomFactor=Math.min(5,Math.abs(deltaY))/20;
       zoomFactor= deltaY<0 ? 1-zoomFactor : zoomFactor+1;
