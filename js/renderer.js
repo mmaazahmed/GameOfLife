@@ -10,14 +10,14 @@ function set_color(game){
   game.canvas.style.background=ColorPalette.c11;
 }
 const Grid={
-  drawBoundary: function(ctx, game) { //might not be necassary. use css?
+  drawBoundary(ctx, game) { //might not be necassary. use css?
     ctx.strokeStyle = ColorPalette.c1;
     ctx.lineWidth=game.cellSize/5;
     ctx.strokeRect(0, 0, game.width, game.height);
 
   },
 
-  drawVerticals:function(ctx, game) {
+  drawVerticals(ctx, game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.width / offset; i++) {
       const x = offset * Math.floor(i);
@@ -28,7 +28,7 @@ const Grid={
     }
   },
 
-  drawHorizontals:function (ctx, game) {
+  drawHorizontals(ctx, game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.height / offset; i++) {
       const y = offset * Math.floor(i);
@@ -37,7 +37,7 @@ const Grid={
     }
   },
 
-  drawSquareGrid: function (ctx, game) {
+  drawSquareGrid (ctx, game) {
     ctx.beginPath();
     this.drawBoundary(ctx, game);
     this.drawVerticals(ctx, game);
@@ -48,7 +48,7 @@ const Grid={
     ctx.closePath();
   },
 
-  drawDotGrid:function(ctx, game) { //consider deleting feature
+  drawDotGrid(ctx, game) { //consider deleting feature
     const radius = 2;
     const cellSize = game.cellSize;
     for (let i = 0; i < game.width; i += cellSize) {
@@ -61,12 +61,12 @@ const Grid={
 }
 
 const ActiveCell={
-  applyColorPalette: function(ctx,cellSize){
+  applyColorPalette(ctx,cellSize){
     ctx.fillStyle = CELL_COLOR;
     ctx.strokeStyle = CELL_BOUNDRY_COLOR;
     ctx.lineWidth = cellSize / 20;
   },
-  drawCircle:function (game, ctx, x, y) {
+  drawCircle(game, ctx, x, y) {
     const cellSize = game.cellSize;
     this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
@@ -75,7 +75,7 @@ const ActiveCell={
     ctx.stroke();
     ctx.closePath();
   },
-  drawSquare:function(game, ctx, x, y) {
+  drawSquare(game, ctx, x, y) {
     const cellSize = game.cellSize;
     this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
@@ -84,7 +84,7 @@ const ActiveCell={
     ctx.stroke();
     ctx.closePath();
   },
-  drawAsCircle: function(ctx, game) {
+  drawAsCircle(ctx, game) {
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
       if(!this.isInView(game,x,y)){continue;}
@@ -92,7 +92,7 @@ const ActiveCell={
       this.drawCircle(game, ctx, x+dx, y+dy);
     }
   },
-  drawAsSquare:function(ctx, game) {
+  drawAsSquare(ctx, game) {
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
 
@@ -103,7 +103,7 @@ const ActiveCell={
     }
   },
   
-  isInView: function(game,x,y){
+  isInView(game,x,y){
 
     const maxGridX=Math.floor(game.width/game.cellSize);
     const maxGridY=Math.floor(game.height/game.cellSize);
