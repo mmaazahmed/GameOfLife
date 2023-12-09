@@ -1,0 +1,12 @@
+featureList:
+
+add: 		glider, spaceShip,stillLifes etc
+change: 	cellColorshowGrid,gridColor,changeBgColor, cellShape,cellSize
+speed: 		inc,dec
+fixedZoom:	in, out	 
+draw:		brush,pen,shapes
+rules: 		ruleForneighbours, ruleForLife, ruleForDeath, ruleForBirth
+save:		video,image
+
+misc features: Edge Wrapping,pause ,clearGrid,show hud of user settings,darkMode
+
