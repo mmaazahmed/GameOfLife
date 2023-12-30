@@ -85,7 +85,7 @@ export function initializeGame(canvas,width, height, cellSize, updateInterval) {
     isPaused: false,
     lastUpdateTime: 0,
     displayDx : 0,
-    displayDy : 0
+    displayDy : 0 
   };
 }
 

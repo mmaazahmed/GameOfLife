@@ -1,3 +1,5 @@
+import { sierpinskiTriangle } from "./game.js";
+import { clearBoard } from "./game.js";
 /**
  * todo:
  * encapsulate mouseEventLogic
@@ -11,7 +13,6 @@ const Scroll = {
   up(game, event) {
     if (event.key !== 'ArrowUp') { return; }
     this.scrollCells(game, 0, this._scrollIncrement);
-    console.log(game.displayDx,game.displayDy);
 
   },
   down(game, event) {
@@ -75,13 +76,12 @@ const Speed={
 }
 const Cell={
     add(game,clickedCell){
-        console.log(clickedCell);
         game.activeCells.add(clickedCell);
     },
     remove(game,clickedCell){
         game.activeCells.delete(clickedCell);
     },
-    changeBackground(ctx, event) {
+    changeBackground( ctx, event) {
       // const canvas=ctx.canvas;
         
       },
@@ -90,7 +90,45 @@ const Cell={
       }
     
 }
+const Drag={
+  isMouseDown : false,
+  prevMousePos : '',
+  onMouseDown(ctx,game,event){
+    // this.isMouseDown=true;
+    this.prevMousePos=getMousePosOnBoard(ctx,game,event);
+  },
+  onMouseUp(ctx,game,event){
+    const currentMousePos=getMousePosOnBoard(ctx,game,event);
+    console.log(currentMousePos,this.prevMousePos);
 
+    const {dx,dy}= this.getDisplacement(currentMousePos,this.prevMousePos);
+    game.displayDx=dx;
+    game.displayDy=dy;
+
+  },
+  scroll(ctx,game,event){
+    if (this.isMouseDown){this.prevMousePos=getMousePosOnBoard(ctx,game,event); } 
+    else{
+    console.log("im here");
+    const currentMousePos=getMousePosOnBoard(ctx,game,event);
+    const {dx,dy}= this.getDisplacement(currentMousePos,this.prevMousePos);
+    game.displayDx+=dx;
+    game.displayDy+=dy;
+    }
+  
+  },
+  getDisplacement(currentMousePos,prevMousePos){
+
+    const [currentX,currentY]=currentMousePos.split(",").map(Number);
+    // console.log(currentX,currentY);
+
+    const [prevX,prevY]=prevMousePos.split(",").map(Number);
+    const dx=currentX-prevX;
+    const dy = currentY-prevY
+    return {dx,dy};
+
+  }
+}
 function isPaused(game, event) {
   if (event.keyCode !== 32) { return; }
   game.isPaused = !game.isPaused;
@@ -111,9 +149,14 @@ function getMousePosOnBoard(ctx, game, event) {
   return `${gridX-game.displayDx},${gridY-game.displayDy}`;
 }
 
+function drawSierTriangle(game,event){
+  if (event.key!=='r'){return;}
+  const nCells=400;
+  clearBoard(game);
+  sierpinskiTriangle(game,nCells);
 
+}
 function handleKeyPress(game, event) {
-  console.log("im here");
     Scroll.up(game, event);
     Scroll.down(game, event);
     Scroll.left(game, event);
@@ -123,6 +166,7 @@ function handleKeyPress(game, event) {
     Zoom.out(game, event);
     Speed.up(game,event);
     Speed.down(game,event);
+    drawSierTriangle(game,event);
 }
 
 
@@ -141,6 +185,8 @@ export function initializeInputListeners(canvas, game) {
     document.addEventListener("keydown", (event) => handleKeyPress(game, event));
 
     canvas.addEventListener("click", (event) =>HandleMouseClick( ctx,game, event));
-
+    
     canvas.addEventListener("wheel",(event)=>Zoom.gestureZoom(ctx,game,event));
+    // canvas.addEventListener("mousedown",(event)=>Drag.onMouseDown(ctx,game,event));
+    // canvas.addEventListener("mouseup",(event)=>Drag.onMouseUp(ctx,game,event));
 }

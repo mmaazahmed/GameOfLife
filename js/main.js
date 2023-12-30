@@ -7,7 +7,6 @@ const canvas = document.getElementById("mycanvas");
 canvas.height = window.innerHeight; canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
 
-
 const updateInterval =0;
 
 const game = initializeGame(
