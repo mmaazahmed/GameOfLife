@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearBoard = exports.addActiveCells = exports.sierpinskiTriangle = exports.populateBoard = exports.initializeGame = exports.updateGame = void 0;
 function removeCells(game, cellsToRemove) {
     for (const cell of cellsToRemove) {
         game.activeCells.delete(cell);
@@ -12,11 +9,13 @@ function addCells(game, cellsToAdd) {
     }
 }
 function getNeighboursCount(game) {
+    // const neighboursCount = new Map<string, number>();
     const neighboursCount = {};
     for (const activeCell of game.activeCells) {
         const [x, y] = activeCell.split(",").map(Number);
         const neighbours = getNeighbours(x, y);
         for (const neighbour of neighbours) {
+            // neighboursCount.set(neighbour, (neighboursCount.get(neighbour) || 0) + 1);
             neighboursCount[neighbour] = (neighboursCount[neighbour] || 0) + 1;
         }
     }
@@ -39,7 +38,7 @@ function getNeighbours(x, y) {
     }
     return neighbours;
 }
-function updateGame(game) {
+export function updateGame(game) {
     const cellsToRemove = new Set();
     const cellsToAdd = new Set();
     const neighboursCount = getNeighboursCount(game);
@@ -58,7 +57,6 @@ function updateGame(game) {
     removeCells(game, cellsToRemove);
     addCells(game, cellsToAdd);
 }
-exports.updateGame = updateGame;
 function getRandomCell(game, maxX, maxY) {
     const minX = Math.floor(maxX * Math.random());
     const minY = Math.floor(maxY * Math.random());
@@ -69,7 +67,7 @@ function getRandomCell(game, maxX, maxY) {
     const gridY = Math.floor(randomY / cellSize);
     return `${gridX},${gridY}`;
 }
-function initializeGame(canvas, width, height, cellSize, updateInterval) {
+export function initializeGame(canvas, width, height, cellSize, updateInterval) {
     return {
         canvas,
         width,
@@ -83,8 +81,7 @@ function initializeGame(canvas, width, height, cellSize, updateInterval) {
         displayDy: 0
     };
 }
-exports.initializeGame = initializeGame;
-function populateBoard(game, nCells) {
+export function populateBoard(game, nCells) {
     const maxX = game.width;
     const maxY = game.height;
     for (let i = 0; i < nCells; i++) {
@@ -92,8 +89,7 @@ function populateBoard(game, nCells) {
         game.activeCells.add(randomCell);
     }
 }
-exports.populateBoard = populateBoard;
-function sierpinskiTriangle(game, nCells) {
+export function sierpinskiTriangle(game, nCells) {
     for (let i = 0; i < nCells; i++) {
         const totalHorizontalCells = Math.floor(game.width / game.cellSize);
         const midX = Math.floor(totalHorizontalCells / 2);
@@ -102,14 +98,11 @@ function sierpinskiTriangle(game, nCells) {
         game.activeCells.add(randomCell);
     }
 }
-exports.sierpinskiTriangle = sierpinskiTriangle;
-function addActiveCells(game, cells) {
+export function addActiveCells(game, cells) {
     for (const cell of cells) {
         game.activeCells.add(cell);
     }
 }
-exports.addActiveCells = addActiveCells;
-function clearBoard(game) {
+export function clearBoard(game) {
     game.activeCells = new Set();
 }
-exports.clearBoard = clearBoard;

@@ -1,22 +1,25 @@
-function removeCells(game, cellsToRemove) {
+import {Game} from './interfaces'
+function removeCells(game:Game, cellsToRemove:Set<string>):void {
   for (const cell of cellsToRemove) {
     game.activeCells.delete(cell);
   }
 }
 
-function addCells(game, cellsToAdd) {
+function addCells(game:Game, cellsToAdd:Set<string>):void {
   for (const cell of cellsToAdd) {
     game.activeCells.add(cell);
   }
 }
 
-function getNeighboursCount(game) {
-  const neighboursCount = {};
+function getNeighboursCount(game:Game) {
+  // const neighboursCount = new Map<string, number>();
+  const neighboursCount : { [key: string]: number } = {};
   for (const activeCell of game.activeCells) {
     const [x, y] = activeCell.split(",").map(Number);
     const neighbours = getNeighbours(x, y);
     for (const neighbour of neighbours) {
-      neighboursCount[neighbour] = (neighboursCount[neighbour] || 0) + 1;
+      // neighboursCount.set(neighbour, (neighboursCount.get(neighbour) || 0) + 1);
+        neighboursCount[neighbour] = (neighboursCount[neighbour] || 0) + 1;
     }
   }
   // If a cell has no live neighbors, initialize its count to 0
@@ -28,9 +31,9 @@ function getNeighboursCount(game) {
   return neighboursCount;
 }
 
-function getNeighbours(x, y) {
+function getNeighbours(x:number, y:number):Set<string> {
   
-  const neighbours = new Set(); 
+  const neighbours = new Set<string>(); 
   for (let i = x - 1; i <= x + 1; i++) {
     for (let j = y - 1; j <= y + 1; j++) {
       if (i !== x || j !== y) {
@@ -41,9 +44,9 @@ function getNeighbours(x, y) {
   return neighbours;
 }
 
-export function updateGame(game) {
-  const cellsToRemove = new Set();
-  const cellsToAdd = new Set();
+export function updateGame(game:Game) {
+  const cellsToRemove = new Set<string>();
+  const cellsToAdd = new Set<string>();
   const neighboursCount = getNeighboursCount(game);
 
   for (const [cell, count] of Object.entries(neighboursCount)) {
@@ -64,7 +67,7 @@ export function updateGame(game) {
   addCells(game, cellsToAdd);
 }
 
-function getRandomCell( game,maxX,maxY) {
+function getRandomCell( game:Game,maxX:number,maxY:number) {
     const minX=Math.floor(maxX * Math.random()) ;
     const minY=Math.floor(maxY * Math.random());
     const cellSize = 150;
@@ -80,7 +83,7 @@ export function initializeGame(
   height:number,
   cellSize:number, 
   updateInterval:number
-) {
+):Game {
   return {
     canvas,
     width,
@@ -95,7 +98,7 @@ export function initializeGame(
   };
 }
 
-export function populateBoard(game,nCells:number) {
+export function populateBoard(game:Game,nCells:number) {
     const maxX=game.width;
     const maxY=game.height;
     for(let i=0;i<nCells;i++){
@@ -103,7 +106,7 @@ export function populateBoard(game,nCells:number) {
         game.activeCells.add(randomCell);
     }
 }
-export function sierpinskiTriangle(game,nCells:number){
+export function sierpinskiTriangle(game:Game,nCells:number){
     for(let i=0;i<nCells;i++){
         const totalHorizontalCells= Math.floor(game.width/game.cellSize);
         const midX=Math.floor(totalHorizontalCells/2);
@@ -115,11 +118,11 @@ export function sierpinskiTriangle(game,nCells:number){
 
     }
 }
-export function addActiveCells(game, cells:number) {
+export function addActiveCells(game:Game, cells:Set<string>) {
   for (const cell of cells) {
     game.activeCells.add(cell);
   }
 }
-export function clearBoard(game) {
+export function clearBoard(game:Game) {
   game.activeCells=new Set();
 }

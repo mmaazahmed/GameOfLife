@@ -1,5 +1,6 @@
 import { sierpinskiTriangle } from "./game.js";
 import { clearBoard } from "./game.js";
+import { Game } from "./interfaces.js";
 /**
  * todo:
  * encapsulate mouseEventLogic
@@ -10,54 +11,54 @@ import { clearBoard } from "./game.js";
  */
 const Scroll = {
   _scrollIncrement: 5,
-  up(game, event) {
+  up(game:Game, event:KeyboardEvent) {
     if (event.key !== 'ArrowUp') { return; }
     this.scrollCells(game, 0, this._scrollIncrement);
 
   },
-  down(game, event) {
+  down(game:Game, event:KeyboardEvent) {
     if (event.key !== 'ArrowDown') { return; }
     this.scrollCells(game, 0, -this._scrollIncrement);
   },
-  left(game, event) {
+  left(game:Game, event:KeyboardEvent) {
     if (event.key !== 'ArrowLeft') { return; }
     this.scrollCells(game,this._scrollIncrement, 0);
   },
-  right(game, event) {
+  right(game:Game, event:KeyboardEvent) {
     if (event.key !== 'ArrowRight') { return; }
     this.scrollCells(game, -this._scrollIncrement, 0);
   },
-  scrollCells (game, dx, dy) {
+  scrollCells (game:Game, dx:number, dy:number) {
     game.displayDx+=dx;
     game.displayDy+=dy;
   }
 };
 
 const Zoom={
-    _oldMousePos:'',
-    getZoomFactor(game,deltaY){
+    _oldMousePos:'0,0',
+    getZoomFactor(game:Game,deltaY:number){
       let zoomFactor=Math.min(5,Math.abs(deltaY))/20;
       zoomFactor= deltaY<0 ? 1-zoomFactor : zoomFactor+1;
       return zoomFactor
     },
-    in(game, event) {
+    in(game:Game, event:KeyboardEvent) {
         if (event.keyCode !== 107) { return; }
         game.cellSize =Math.min(200,game.cellSize*this.getZoomFactor(game,5));
       },
 
-    out(game, event) {
+    out(game:Game, event:KeyboardEvent) {
         if (event.keyCode !== 109) { return; }
         game.cellSize = Math.max(1, game.cellSize*this.getZoomFactor(game,-5));
       },
-    gestureZoom(ctx,game,event){
-        this.oldMousePos =getMousePosOnBoard(ctx,game,event);
+    gestureZoom(ctx:CanvasRenderingContext2D,game:Game,event:WheelEvent){
+        this._oldMousePos =getMousePosOnBoard(ctx,game,event);
         let deltaY=Math.floor(event.deltaY);
         const zoomFactor=this.getZoomFactor(game,deltaY);
         game.cellSize=Math.min(50,Math.max(1,game.cellSize*zoomFactor));
         this.centerOnZoom(ctx,game,event);
       },
-    centerOnZoom(ctx,game,event){
-      const [oldmouseX,oldmouseY] =this.oldMousePos.split(",").map(Number);
+    centerOnZoom(ctx:CanvasRenderingContext2D,game:Game,event:MouseEvent){
+      const [oldmouseX,oldmouseY] =this._oldMousePos.split(",").map(Number);
       const [newMouseX,newMouseY] = getMousePosOnBoard(ctx,game,event).split(",").map(Number);
       Scroll.scrollCells(game,newMouseX-oldmouseX,0);
       Scroll.scrollCells(game,0,newMouseY-oldmouseY);
@@ -65,39 +66,39 @@ const Zoom={
     }
 }
 const Speed={
-    up(game, event) {
+    up(game:Game, event:KeyboardEvent) {
         if (event.keyCode !== 104) {return;}
         game.updateInterval= Math.max(0, game.updateInterval-10);
       },
-    down(game, event) {
+    down(game:Game, event:KeyboardEvent) {
         if (event.keyCode !== 105) {return;}
         game.updateInterval = Math.min(500, game.updateInterval+10);
       }
 }
 const Cell={
-    add(game,clickedCell){
+    add(game:Game,clickedCell:string){
         game.activeCells.add(clickedCell);
     },
-    remove(game,clickedCell){
+    remove(game:Game,clickedCell:string){
         game.activeCells.delete(clickedCell);
     },
-    changeBackground( ctx, event) {
-      // const canvas=ctx.canvas;
+    // changeBackground( ctx, event) {
+    //   // const canvas=ctx.canvas;
         
-      },
-    changeColor(canvas, event) {
-        //todo
-      }
+    //   },
+    // changeColor(canvas, event) {
+    //     //todo
+    //   }
     
 }
 const Drag={
   isMouseDown : false,
   prevMousePos : '',
-  onMouseDown(ctx,game,event){
+  onMouseDown(ctx:CanvasRenderingContext2D,game:Game,event:MouseEvent){
     // this.isMouseDown=true;
     this.prevMousePos=getMousePosOnBoard(ctx,game,event);
   },
-  onMouseUp(ctx,game,event){
+  onMouseUp(ctx:CanvasRenderingContext2D,game:Game,event:MouseEvent){
     const currentMousePos=getMousePosOnBoard(ctx,game,event);
     console.log(currentMousePos,this.prevMousePos);
 
@@ -106,7 +107,7 @@ const Drag={
     game.displayDy=dy;
 
   },
-  scroll(ctx,game,event){
+  scroll(ctx:CanvasRenderingContext2D,game:Game,event:MouseEvent){
     if (this.isMouseDown){this.prevMousePos=getMousePosOnBoard(ctx,game,event); } 
     else{
     console.log("im here");
@@ -117,7 +118,7 @@ const Drag={
     }
   
   },
-  getDisplacement(currentMousePos,prevMousePos){
+  getDisplacement(currentMousePos:string,prevMousePos:string){
 
     const [currentX,currentY]=currentMousePos.split(",").map(Number);
     // console.log(currentX,currentY);
@@ -129,13 +130,13 @@ const Drag={
 
   }
 }
-function isPaused(game, event) {
+function isPaused(game:Game, event:KeyboardEvent) {
   if (event.keyCode !== 32) { return; }
   game.isPaused = !game.isPaused;
 }
 
 
-function getMousePosOnBoard(ctx, game, event) {
+function getMousePosOnBoard(ctx:CanvasRenderingContext2D, game:Game, event:MouseEvent) {
   const cellSize = game.cellSize;
   const canvasRect = ctx.canvas.getBoundingClientRect();
 
@@ -149,14 +150,14 @@ function getMousePosOnBoard(ctx, game, event) {
   return `${gridX-game.displayDx},${gridY-game.displayDy}`;
 }
 
-function drawSierTriangle(game,event){
+function drawSierTriangle(game:Game,event:KeyboardEvent){
   if (event.key!=='r'){return;}
   const nCells=400;
   clearBoard(game);
   sierpinskiTriangle(game,nCells);
 
 }
-function handleKeyPress(game, event) {
+function handleKeyPress(game:Game, event:KeyboardEvent) {
     Scroll.up(game, event);
     Scroll.down(game, event);
     Scroll.left(game, event);
@@ -171,7 +172,7 @@ function handleKeyPress(game, event) {
 
 
 
-function HandleMouseClick(ctx, game, event) {
+function HandleMouseClick(ctx:CanvasRenderingContext2D, game:Game, event:MouseEvent) {
     const clickedCell = getMousePosOnBoard(ctx, game, event);
     if (!game.activeCells.has(clickedCell)) {
         Cell.add(game,clickedCell);
@@ -180,8 +181,8 @@ function HandleMouseClick(ctx, game, event) {
     }
 }
 
-export function initializeInputListeners(canvas, game) {
-    const ctx = canvas.getContext("2d");
+export function initializeInputListeners(canvas:HTMLCanvasElement, game:Game) {
+    const ctx = canvas.getContext("2d")!;
     document.addEventListener("keydown", (event) => handleKeyPress(game, event));
 
     canvas.addEventListener("click", (event) =>HandleMouseClick( ctx,game, event));

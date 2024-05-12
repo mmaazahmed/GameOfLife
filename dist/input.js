@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.initializeInputListeners = void 0;
-const game_js_1 = require("./game.js");
-const game_js_2 = require("./game.js");
+import { sierpinskiTriangle } from "./game.js";
+import { clearBoard } from "./game.js";
 /**
  * todo:
  * encapsulate mouseEventLogic
@@ -43,7 +40,7 @@ const Scroll = {
     }
 };
 const Zoom = {
-    _oldMousePos: '',
+    _oldMousePos: '0,0',
     getZoomFactor(game, deltaY) {
         let zoomFactor = Math.min(5, Math.abs(deltaY)) / 20;
         zoomFactor = deltaY < 0 ? 1 - zoomFactor : zoomFactor + 1;
@@ -62,14 +59,14 @@ const Zoom = {
         game.cellSize = Math.max(1, game.cellSize * this.getZoomFactor(game, -5));
     },
     gestureZoom(ctx, game, event) {
-        this.oldMousePos = getMousePosOnBoard(ctx, game, event);
+        this._oldMousePos = getMousePosOnBoard(ctx, game, event);
         let deltaY = Math.floor(event.deltaY);
         const zoomFactor = this.getZoomFactor(game, deltaY);
         game.cellSize = Math.min(50, Math.max(1, game.cellSize * zoomFactor));
         this.centerOnZoom(ctx, game, event);
     },
     centerOnZoom(ctx, game, event) {
-        const [oldmouseX, oldmouseY] = this.oldMousePos.split(",").map(Number);
+        const [oldmouseX, oldmouseY] = this._oldMousePos.split(",").map(Number);
         const [newMouseX, newMouseY] = getMousePosOnBoard(ctx, game, event).split(",").map(Number);
         Scroll.scrollCells(game, newMouseX - oldmouseX, 0);
         Scroll.scrollCells(game, 0, newMouseY - oldmouseY);
@@ -96,12 +93,12 @@ const Cell = {
     remove(game, clickedCell) {
         game.activeCells.delete(clickedCell);
     },
-    changeBackground(ctx, event) {
-        // const canvas=ctx.canvas;
-    },
-    changeColor(canvas, event) {
-        //todo
-    }
+    // changeBackground( ctx, event) {
+    //   // const canvas=ctx.canvas;
+    //   },
+    // changeColor(canvas, event) {
+    //     //todo
+    //   }
 };
 const Drag = {
     isMouseDown: false,
@@ -158,8 +155,8 @@ function drawSierTriangle(game, event) {
         return;
     }
     const nCells = 400;
-    (0, game_js_2.clearBoard)(game);
-    (0, game_js_1.sierpinskiTriangle)(game, nCells);
+    clearBoard(game);
+    sierpinskiTriangle(game, nCells);
 }
 function handleKeyPress(game, event) {
     Scroll.up(game, event);
@@ -182,7 +179,7 @@ function HandleMouseClick(ctx, game, event) {
         Cell.remove(game, clickedCell);
     }
 }
-function initializeInputListeners(canvas, game) {
+export function initializeInputListeners(canvas, game) {
     const ctx = canvas.getContext("2d");
     document.addEventListener("keydown", (event) => handleKeyPress(game, event));
     canvas.addEventListener("click", (event) => HandleMouseClick(ctx, game, event));
@@ -190,4 +187,3 @@ function initializeInputListeners(canvas, game) {
     // canvas.addEventListener("mousedown",(event)=>Drag.onMouseDown(ctx,game,event));
     // canvas.addEventListener("mouseup",(event)=>Drag.onMouseUp(ctx,game,event));
 }
-exports.initializeInputListeners = initializeInputListeners;

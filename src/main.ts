@@ -1,15 +1,15 @@
 import { initializeGame, populateBoard,sierpinskiTriangle } from "./game.js";
 import { initializeInputListeners } from "./input.js";
 import { gameLoop } from "./gameLoop.js";
-
+import { Game } from "./interfaces.js";
 const cell_size = 3;
 const canvas:HTMLCanvasElement= document.getElementById("mycanvas")as HTMLCanvasElement ;
 canvas.height = window.innerHeight; canvas.width = window.innerWidth;
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d")!;
 
 const updateInterval =0;
 
-const game = initializeGame(
+const game:Game = initializeGame(
   canvas,
   canvas.width,
   canvas.height,

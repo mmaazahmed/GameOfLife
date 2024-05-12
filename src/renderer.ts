@@ -1,3 +1,4 @@
+import { Game } from "./interfaces.js";
 import {ColorPalette} from "./utils/colorPalette.js";
 const CELL_COLOR=ColorPalette.c15; //c12 also looks good
 const CELL_BOUNDRY_COLOR = ColorPalette.c4;
@@ -6,18 +7,18 @@ const DOT_COLOR = "blue";
 
 
 
-function set_color(game){
+function set_color(game:Game){
   game.canvas.style.background=ColorPalette.c11;
 }
 const Grid={
-  drawBoundary(ctx, game) { //might not be necassary. use css?
+  drawBoundary(ctx:CanvasRenderingContext2D, game:Game) { //might not be necassary. use css?
     ctx.strokeStyle = ColorPalette.c1;
     ctx.lineWidth=game.cellSize/5;
     ctx.strokeRect(0, 0, game.width, game.height);
 
   },
 
-  drawVerticals(ctx, game) {
+  drawVerticals(ctx:CanvasRenderingContext2D, game:Game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.width / offset; i++) {
       const x = offset * Math.floor(i);
@@ -28,7 +29,7 @@ const Grid={
     }
   },
 
-  drawHorizontals(ctx, game) {
+  drawHorizontals(ctx:CanvasRenderingContext2D, game:Game) {
     const offset = game.cellSize;
     for (let i = 1; i < game.height / offset; i++) {
       const y = offset * Math.floor(i);
@@ -37,7 +38,7 @@ const Grid={
     }
   },
 
-  drawSquareGrid (ctx, game) {
+  drawSquareGrid (ctx:CanvasRenderingContext2D, game:Game) {
     ctx.beginPath();
     this.drawBoundary(ctx, game);
     this.drawVerticals(ctx, game);
@@ -48,7 +49,7 @@ const Grid={
     ctx.closePath();
   },
 
-  drawDotGrid(ctx, game) { //consider deleting feature
+  drawDotGrid(ctx:CanvasRenderingContext2D, game:Game) { //consider deleting feature
     const radius = 2;
     const cellSize = game.cellSize;
     for (let i = 0; i < game.width; i += cellSize) {
@@ -61,12 +62,12 @@ const Grid={
 }
 
 const ActiveCell={
-  applyColorPalette(ctx,cellSize){
+  applyColorPalette(ctx:CanvasRenderingContext2D,cellSize:number){
     ctx.fillStyle = CELL_COLOR;
     ctx.strokeStyle = CELL_BOUNDRY_COLOR;
     ctx.lineWidth = cellSize / 20;
   },
-  drawCircle(game, ctx, x, y) {
+  drawCircle(game:Game, ctx:CanvasRenderingContext2D, x:number, y:number) {
     const cellSize = game.cellSize;
     this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
@@ -75,7 +76,7 @@ const ActiveCell={
     ctx.stroke();
     ctx.closePath();
   },
-  drawSquare(game, ctx, x, y) {
+  drawSquare(game:Game, ctx:CanvasRenderingContext2D, x:number, y:number) {
     const cellSize = game.cellSize;
     this.applyColorPalette(ctx,cellSize);
     ctx.beginPath();
@@ -84,7 +85,7 @@ const ActiveCell={
     ctx.stroke();
     ctx.closePath();
   },
-  drawAsCircle(ctx, game) {
+  drawAsCircle(ctx:CanvasRenderingContext2D, game:Game) {
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
       if(!this.isInView(game,x,y)){continue;}
@@ -92,7 +93,7 @@ const ActiveCell={
       this.drawCircle(game, ctx, x+dx, y+dy);
     }
   },
-  drawAsSquare(ctx, game) {
+  drawAsSquare(ctx:CanvasRenderingContext2D, game:Game) {
     for (const activeCell of game.activeCells) {
       let [x, y] = activeCell.split(",").map(Number);
 
@@ -103,7 +104,7 @@ const ActiveCell={
     }
   },
   
-  isInView(game,x,y){
+  isInView(game:Game,x:number,y:number){
 
     const maxGridX=Math.floor(game.width/game.cellSize);
     const maxGridY=Math.floor(game.height/game.cellSize);
@@ -113,7 +114,7 @@ const ActiveCell={
 }
 }
 
-export function renderGame(ctx, game) {
+export function renderGame(ctx:CanvasRenderingContext2D, game:Game) {
   set_color(game);
   clearCanvas(ctx, game);
   Grid.drawSquareGrid(ctx, game);
@@ -122,6 +123,6 @@ export function renderGame(ctx, game) {
 
 
 }
-export function clearCanvas(ctx, game) {
+export function clearCanvas(ctx:CanvasRenderingContext2D, game:Game) {
   ctx.clearRect(0, 0, game.width, game.height);
 }

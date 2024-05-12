@@ -1,17 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearCanvas = exports.renderGame = void 0;
-const colorPalette_js_1 = require("./utils/colorPalette.js");
-const CELL_COLOR = colorPalette_js_1.ColorPalette.c15; //c12 also looks good
-const CELL_BOUNDRY_COLOR = colorPalette_js_1.ColorPalette.c4;
-const GRID_COLOR = colorPalette_js_1.ColorPalette.c14;
+import { ColorPalette } from "./utils/colorPalette.js";
+const CELL_COLOR = ColorPalette.c15; //c12 also looks good
+const CELL_BOUNDRY_COLOR = ColorPalette.c4;
+const GRID_COLOR = ColorPalette.c14;
 const DOT_COLOR = "blue";
 function set_color(game) {
-    game.canvas.style.background = colorPalette_js_1.ColorPalette.c11;
+    game.canvas.style.background = ColorPalette.c11;
 }
 const Grid = {
     drawBoundary(ctx, game) {
-        ctx.strokeStyle = colorPalette_js_1.ColorPalette.c1;
+        ctx.strokeStyle = ColorPalette.c1;
         ctx.lineWidth = game.cellSize / 5;
         ctx.strokeRect(0, 0, game.width, game.height);
     },
@@ -106,15 +103,13 @@ const ActiveCell = {
         return (isInView);
     }
 };
-function renderGame(ctx, game) {
+export function renderGame(ctx, game) {
     set_color(game);
     clearCanvas(ctx, game);
     Grid.drawSquareGrid(ctx, game);
     // ActiveCell.drawAsSquare(ctx, game);
     ActiveCell.drawAsCircle(ctx, game);
 }
-exports.renderGame = renderGame;
-function clearCanvas(ctx, game) {
+export function clearCanvas(ctx, game) {
     ctx.clearRect(0, 0, game.width, game.height);
 }
-exports.clearCanvas = clearCanvas;
