@@ -3,7 +3,7 @@ import { initializeInputListeners } from "./input.js";
 import { gameLoop } from "./gameLoop.js";
 
 const cell_size = 3;
-const canvas = document.getElementById("mycanvas");
+const canvas:HTMLCanvasElement= document.getElementById("mycanvas")as HTMLCanvasElement ;
 canvas.height = window.innerHeight; canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
 

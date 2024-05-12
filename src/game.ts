@@ -74,14 +74,20 @@ function getRandomCell( game,maxX,maxY) {
     const gridY = Math.floor(randomY / cellSize);
   return `${gridX},${gridY}`;
 }
-export function initializeGame(canvas,width, height, cellSize, updateInterval) {
+export function initializeGame(
+  canvas:HTMLCanvasElement,
+  width:number, 
+  height:number,
+  cellSize:number, 
+  updateInterval:number
+) {
   return {
     canvas,
     width,
     height,
     cellSize,
     updateInterval,
-    activeCells: new Set(),
+    activeCells: new Set<string>(),
     isPaused: false,
     lastUpdateTime: 0,
     displayDx : 0,
@@ -89,7 +95,7 @@ export function initializeGame(canvas,width, height, cellSize, updateInterval) {
   };
 }
 
-export function populateBoard(game,nCells) {
+export function populateBoard(game,nCells:number) {
     const maxX=game.width;
     const maxY=game.height;
     for(let i=0;i<nCells;i++){
@@ -97,7 +103,7 @@ export function populateBoard(game,nCells) {
         game.activeCells.add(randomCell);
     }
 }
-export function sierpinskiTriangle(game,nCells){
+export function sierpinskiTriangle(game,nCells:number){
     for(let i=0;i<nCells;i++){
         const totalHorizontalCells= Math.floor(game.width/game.cellSize);
         const midX=Math.floor(totalHorizontalCells/2);
@@ -109,7 +115,7 @@ export function sierpinskiTriangle(game,nCells){
 
     }
 }
-export function addActiveCells(game, cells) {
+export function addActiveCells(game, cells:number) {
   for (const cell of cells) {
     game.activeCells.add(cell);
   }
