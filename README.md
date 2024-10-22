@@ -1,7 +1,8 @@
 # Conways GameOfLife
-<img loading="lazy" width="500px" height="600px" src="./img/1.png" alt="GOL" />
-<img loading="lazy" width="500px" height="600px" src="./img/2.png" alt="GOL" />
-
+<div style="display: flex;">
+    <img loading="lazy" width="500px" height="600px" src="./img/1.png" alt="GOL" />
+    <img loading="lazy" width="500px" height="600px" src="./img/2.png" alt="GOL" />
+</div>
 NOTE: Project in progress.  
 A live server is needed to run this project.
 
